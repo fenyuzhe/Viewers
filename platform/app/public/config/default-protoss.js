@@ -10,17 +10,14 @@ window.config = {
           className: 'text-purple-600 line-through flex items-center',
           href: 'http://protoss-tech.com',
         },
-        React.createElement(
-          'img',
-          {
-            src: '../assets/xl.ico',
-            className: 'w-8 h-8 mr-2',
-            // alt: 'Protoss Dicom Image Viewer',
-          }
-        ),
+        React.createElement('img', {
+          src: '../assets/xl.ico',
+          className: 'w-8 h-8 mr-2',
+          // alt: 'Protoss Dicom Image Viewer',
+        }),
         React.createElement(
           'span',
-          { key: 'text', style: { color: 'white', fontSize: '24px' } },
+          { key: 'text', style: { color: 'white', fontSize: '24px' } }
           // 'Protoss Dicom Image Viewer'
         )
       );
@@ -48,7 +45,6 @@ window.config = {
     cornerstoneOverlayTopRight: {
       id: 'cornerstoneOverlayTopRight',
       items: [
-
         {
           id: 'PatientName',
           customizationType: 'ohif.overlayItem',
@@ -58,8 +54,7 @@ window.config = {
           condition: ({ instance }) =>
             instance && instance.PatientName && instance.PatientName.Alphabetic,
           contentF: ({ instance, formatters: { formatPN } }) =>
-            formatPN(instance.PatientName.Alphabetic)
-
+            formatPN(instance.PatientName.Alphabetic),
         },
         {
           id: 'PatientId',
@@ -74,7 +69,10 @@ window.config = {
           // label: 'DOB:',
           title: "Patient's Date of birth And Sex",
           condition: ({ instance }) => instance && instance.PatientBirthDate,
-          contentF: ({ instance, formatters: { formatDate } }) => formatDate(instance.PatientBirthDate) + ' ' + (instance.PatientSex ? instance.PatientSex : ''),
+          contentF: ({ instance, formatters: { formatDate } }) =>
+            formatDate(instance.PatientBirthDate) +
+            ' ' +
+            (instance.PatientSex ? instance.PatientSex : ''),
         },
         {
           id: 'InstitutionName',
@@ -113,15 +111,23 @@ window.config = {
           customizationType: 'ohif.overlayItem',
           // label: 'T:',
           title: 'Slice Thickness',
-          condition: ({ instance }) => instance && instance.SliceThickness && instance.ImagePositionPatient,
+          condition: ({ instance }) =>
+            instance && instance.SliceThickness && instance.ImagePositionPatient,
           contentF: ({ instance, formatters: { formatNumberPrecision, splitStr } }) => {
             // 分割 ImagePositionPatient 字符串，选择 Z 轴值
             const ImagePositionPatient = instance.ImagePositionPatient;
             const zAxisValue = ImagePositionPatient[2];
 
-            return 'T: ' + formatNumberPrecision(instance.SliceThickness, 2) + 'mm' + ' L: ' + formatNumberPrecision(zAxisValue) + 'mm';
+            return (
+              'T: ' +
+              formatNumberPrecision(instance.SliceThickness, 2) +
+              'mm' +
+              ' L: ' +
+              formatNumberPrecision(zAxisValue) +
+              'mm'
+            );
           },
-        }
+        },
       ],
     },
     cornerstoneOverlayBottomRight: {
@@ -133,8 +139,7 @@ window.config = {
           label: '',
           title: 'KV and XRay',
           condition: ({ instance }) => instance && instance.XRayTubeCurrent && instance.KVP,
-          contentF: ({ instance }) =>
-            instance.XRayTubeCurrent + 'mA ' + instance.KVP + 'kV',
+          contentF: ({ instance }) => instance.XRayTubeCurrent + 'mA ' + instance.KVP + 'kV',
         },
         {
           id: 'StudyDateTime',
@@ -145,7 +150,7 @@ window.config = {
           contentF: ({ instance, formatters: { formatDate, formatTime } }) =>
             formatDate(instance.StudyDate) + ' ' + formatTime(instance.AcquisitionTime),
         },
-      ]
+      ],
     },
     dicomUploadComponent:
       '@ohif/extension-cornerstone.customizationModule.cornerstoneDicomUploadComponent',
@@ -185,6 +190,7 @@ window.config = {
         supportsStow: true,
         imageRendering: 'wadors',
         thumbnailRendering: 'wadors',
+        acceptHeader: 'application/json',
         enableStudyLazyLoad: true,
         supportsFuzzyMatching: true,
         supportsWildcard: true,
