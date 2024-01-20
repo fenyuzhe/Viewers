@@ -148,9 +148,7 @@ window.config = {
           title: 'Study date time',
           condition: ({ instance }) => instance && instance.StudyDate,
           contentF: ({ instance, formatters: { formatDate, formatTime } }) =>
-            formatDate(instance.StudyDate, 'YYYY-MM-DD') +
-            ' ' +
-            formatTime(instance.AcquisitionTime),
+            formatDate(instance.StudyDate, 'YYYY-MM-DD') + ' ' + formatTime(instance.ContentTime),
         },
       ],
     },
@@ -159,7 +157,6 @@ window.config = {
   },
   extensions: [],
   modes: [],
-  customizationService: {},
   showStudyList: true,
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
