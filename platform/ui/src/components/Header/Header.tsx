@@ -34,9 +34,9 @@ function Header({
       isSticky={isSticky}
     >
       <div className="flex flex-1 justify-between">
-        <div className="flex items-center">
-          {/* // TODO: Should preserve filter/sort
+        {/* // TODO: Should preserve filter/sort
               // Either injected service? Or context (like react router's `useLocation`?) */}
+        {/* <div className="flex items-center">
           <div
             className={classNames(
               'mr-3 inline-flex items-center',
@@ -55,9 +55,9 @@ function Header({
               {WhiteLabeling?.createLogoComponentFn?.(React, props) || <Svg name="logo-ohif" />}
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="flex items-center">{children}</div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <span className="text-common-light mr-3 text-lg">{t('INVESTIGATIONAL USE ONLY')}</span>
           <Dropdown
             id="options"
@@ -84,7 +84,7 @@ function Header({
               <Icon name="chevron-down" />
             </IconButton>
           </Dropdown>
-        </div>
+        </div> */}
       </div>
     </NavBar>
   );
