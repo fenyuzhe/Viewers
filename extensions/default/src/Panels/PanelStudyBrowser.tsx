@@ -87,6 +87,8 @@ function PanelStudyBrowser({
           description: qidoStudy.StudyDescription,
           modalities: qidoStudy.ModalitiesInStudy,
           numInstances: qidoStudy.NumInstances,
+          patientName: qidoStudy.PatientName,
+          accessionNumber: qidoStudy.AccessionNumber,
         };
       });
 
@@ -107,6 +109,9 @@ function PanelStudyBrowser({
   // // ~~ Initial Thumbnails
   useEffect(() => {
     const currentDisplaySets = displaySetService.activeDisplaySets;
+    if (!currentDisplaySets.length) {
+      return;
+    }
     currentDisplaySets.forEach(async dSet => {
       const newImageSrcEntry = {};
       const displaySet = displaySetService.getDisplaySetByUID(dSet.displaySetInstanceUID);
@@ -130,6 +135,9 @@ function PanelStudyBrowser({
   useEffect(() => {
     // TODO: Are we sure `activeDisplaySets` will always be accurate?
     const currentDisplaySets = displaySetService.activeDisplaySets;
+    if (!currentDisplaySets.length) {
+      return;
+    }
     const mappedDisplaySets = _mapDisplaySets(currentDisplaySets, thumbnailImageSrcMap);
     sortStudyInstances(mappedDisplaySets);
 
@@ -204,7 +212,12 @@ function PanelStudyBrowser({
     };
   }, [StudyInstanceUIDs, thumbnailImageSrcMap, displaySetService]);
 
-  const tabs = _createStudyBrowserTabs(StudyInstanceUIDs, studyDisplayList, displaySets);
+  const tabs = _createStudyBrowserTabs(
+    StudyInstanceUIDs,
+    studyDisplayList,
+    displaySets,
+    hangingProtocolService
+  );
 
   // TODO: Should not fire this on "close"
   function _handleStudyClick(StudyInstanceUID) {
@@ -335,7 +348,12 @@ function _getComponentType(ds) {
  * @param {object[]} displaySets
  * @returns tabs - The prop object expected by the StudyBrowser component
  */
-function _createStudyBrowserTabs(primaryStudyInstanceUIDs, studyDisplayList, displaySets) {
+function _createStudyBrowserTabs(
+  primaryStudyInstanceUIDs,
+  studyDisplayList,
+  displaySets,
+  hangingProtocolService
+) {
   const primaryStudies = [];
   const recentStudies = [];
   const allStudies = [];
@@ -344,6 +362,9 @@ function _createStudyBrowserTabs(primaryStudyInstanceUIDs, studyDisplayList, dis
     const displaySetsForStudy = displaySets.filter(
       ds => ds.StudyInstanceUID === study.studyInstanceUid
     );
+    // Sort them
+    const dsSortFn = hangingProtocolService.getDisplaySetSortFunction();
+    displaySetsForStudy.sort(dsSortFn);
     const tabStudy = Object.assign({}, study, {
       displaySets: displaySetsForStudy,
     });
@@ -356,12 +377,19 @@ function _createStudyBrowserTabs(primaryStudyInstanceUIDs, studyDisplayList, dis
       allStudies.push(tabStudy);
     }
   });
+  // Newest first
+  const _byDate = (a, b) => {
+    const dateA = Date.parse(a);
+    const dateB = Date.parse(b);
+
+    return dateB - dateA;
+  };
 
   const tabs = [
     {
       name: 'primary',
       label: 'Primary',
-      studies: primaryStudies,
+      studies: primaryStudies.sort((studyA, studyB) => _byDate(studyA.date, studyB.date)),
     },
     {
       name: 'recent',
