@@ -55,7 +55,7 @@ const StudyItem = ({
           <div className="mx-auto text-base text-white">{accessionNumber}</div>
         </div>
         <div className="flex flex-row pt-1">
-          <div className="mx-auto text-base text-white">{formatDate(date)}</div>
+          <div className="mx-auto text-base text-white">{formatDate(date, 'YYYY-MM-DD')}</div>
         </div>
       </div>
       {!!trackedSeries && (

@@ -70,7 +70,7 @@ window.config = {
           title: "Patient's Date of birth And Sex",
           condition: ({ instance }) => instance && instance.PatientBirthDate,
           contentF: ({ instance, formatters: { formatDate } }) =>
-            formatDate(instance.PatientBirthDate) +
+            formatDate(instance.PatientBirthDate, 'YYYY-MM-DD') +
             ' ' +
             (instance.PatientSex ? instance.PatientSex : ''),
         },
@@ -148,7 +148,9 @@ window.config = {
           title: 'Study date time',
           condition: ({ instance }) => instance && instance.StudyDate,
           contentF: ({ instance, formatters: { formatDate, formatTime } }) =>
-            formatDate(instance.StudyDate) + ' ' + formatTime(instance.AcquisitionTime),
+            formatDate(instance.StudyDate, 'YYYY-MM-DD') +
+            ' ' +
+            formatTime(instance.AcquisitionTime),
         },
       ],
     },
