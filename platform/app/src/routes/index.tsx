@@ -5,6 +5,7 @@ import { ErrorBoundary } from '@ohif/ui';
 // Route Components
 import DataSourceWrapper from './DataSourceWrapper';
 import WorkList from './WorkList';
+import ClinicalWorkstation from './ClinicalWorkstation';
 import Local from './Local';
 import Debug from './Debug';
 import NotFound from './NotFound';
@@ -108,10 +109,19 @@ const createRoutes = ({
     props: { children: WorkList, servicesManager, extensionManager },
   };
 
+  //创建ClinicalWorkstation路由
+  const ClinicalWorkstationRoute = {
+    path: '/ClinicalWorkList',
+    children: ClinicalWorkstation,
+    private: true,
+    // props: { children: WorkList, servicesManager, extensionManager },
+  };
+
   const customRoutes = customizationService.getGlobalCustomization('customRoutes');
   const allRoutes = [
     ...routes,
-    ...(showStudyList ? [WorkListRoute] : []),
+    // ...(showStudyList ? [WorkListRoute] : []),
+    ...(showStudyList ? [ClinicalWorkstationRoute] : []),
     ...(customRoutes?.routes || []),
     ...bakedInRoutes,
     customRoutes?.notFoundRoute || notFoundRoute,
