@@ -164,8 +164,9 @@ function modeFactory({ modeConfiguration }) {
           return {
             id: ohif.layout,
             props: {
-              leftPanels: [ohif.leftPanel],
-              rightPanels: [ohif.rightPanel],
+              // leftPanels: [ohif.leftPanel],
+              // rightPanels: [ohif.rightPanel],
+              rightPanels: [ohif.leftPanel],
               viewports: [
                 {
                   namespace: cornerstone.viewport,
