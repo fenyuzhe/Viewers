@@ -4,6 +4,8 @@ import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import Icon from '../Icon';
+import { utils } from '@ohif/core';
+const { formatDate } = utils;
 
 const baseClasses =
   'first:border-0 border-t border-secondary-light cursor-pointer select-none outline-none';
@@ -14,6 +16,8 @@ const StudyItem = ({
   numInstances,
   modalities,
   trackedSeries,
+  patientName,
+  accessionNumber,
   isActive,
   onClick,
 }) => {
@@ -30,7 +34,7 @@ const StudyItem = ({
       tabIndex="0"
     >
       <div className="flex flex-1 flex-col px-4 pb-2">
-        <div className="flex flex-row items-center justify-between pt-2 pb-2">
+        {/* <div className="flex flex-row items-center justify-between pt-2 pb-2">
           <div className="text-base text-white">{date}</div>
           <div className="flex flex-row items-center text-base text-blue-300">
             <Icon
@@ -39,10 +43,19 @@ const StudyItem = ({
             />
             {numInstances}
           </div>
-        </div>
-        <div className="flex flex-row py-1">
+        </div> */}
+        {/* <div className="flex flex-row py-1">
           <div className="pr-5 text-xl text-blue-300">{modalities}</div>
           <div className="truncate-2-lines break-words text-base text-blue-300">{description}</div>
+        </div> */}
+        <div className="flex flex-row items-center justify-between pt-1">
+          <div className=" mx-auto text-base text-white">{patientName}</div>
+        </div>
+        <div className="flex flex-row pt-1">
+          <div className="mx-auto text-base text-white">{accessionNumber}</div>
+        </div>
+        <div className="flex flex-row pt-1">
+          <div className="mx-auto text-base text-white">{formatDate(date)}</div>
         </div>
       </div>
       {!!trackedSeries && (
@@ -59,7 +72,7 @@ const StudyItem = ({
               name="tracked"
               className="text-primary-light mr-2 w-4"
             />
-            {t('Tracked series', {trackedSeries: trackedSeries})}
+            {t('Tracked series', { trackedSeries: trackedSeries })}
           </div>
         </div>
       )}

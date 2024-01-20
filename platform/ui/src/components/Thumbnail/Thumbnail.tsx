@@ -39,7 +39,8 @@ const Thumbnail = ({
     <div
       className={classnames(
         className,
-        'group mb-8 flex flex-1 cursor-pointer select-none flex-col px-3 outline-none'
+        // 'group mb-8 flex flex-1 cursor-pointer select-none flex-col px-3 outline-none'
+        'group mb-1 flex flex-1 cursor-pointer select-none flex-col px-3 outline-none'
       )}
       id={`thumbnail-${displaySetInstanceUID}`}
       data-cy={`study-browser-thumbnail`}
@@ -61,18 +62,44 @@ const Thumbnail = ({
           }}
         >
           {imageSrc ? (
-            <img
-              src={imageSrc}
-              alt={imageAltText}
-              className="min-h-32 object-none"
-              crossOrigin="anonymous"
-            />
+            // <img
+            //   src={imageSrc}
+            //   alt={imageAltText}
+            //   className="min-h-32 object-none"
+            //   crossOrigin="anonymous"
+            // />
+            <div style={{ position: 'relative' }}>
+              <img
+                src={imageSrc}
+                alt={imageAltText}
+                className="min-h-32 object-none"
+                crossOrigin="anonymous"
+              />
+              <div
+                className="absolute bottom-0 left-0 ml-2"
+                style={{ color: '#fff' }}
+              >
+                <span className=" text-primary-light font-bold">{'S: '}</span>
+                {seriesNumber}
+              </div>
+              <div
+                className="absolute bottom-0 right-0 mr-2 flex flex-row items-center"
+                style={{ color: '#fff' }}
+              >
+                <Icon
+                  name={countIcon || 'group-layers'}
+                  className="mr-1 w-3"
+                />
+                {` ${numInstances}`}
+              </div>
+            </div>
           ) : (
             <div>{imageAltText}</div>
           )}
         </div>
-        <div className="flex flex-1 flex-row items-center pt-2 text-base text-blue-300">
-          <div className="mr-4">
+        {/* <div className="flex flex-1 flex-row items-center pt-2 text-base text-blue-300"> */}
+        <div className="flex flex-1 flex-row items-center pt-1 text-base text-blue-300">
+          {/* <div className="mr-4">
             <span className="text-primary-main font-bold">{'S: '}</span>
             {seriesNumber}
           </div>
@@ -82,13 +109,16 @@ const Thumbnail = ({
               className="mr-2 w-3"
             />
             {` ${numInstances}`}
-          </div>
+          </div> */}
           <DisplaySetMessageListTooltip
             messages={messages}
             id={`display-set-tooltip-${displaySetInstanceUID}`}
           />
         </div>
-        <div className="break-all text-base text-white">{description}</div>
+        {/* <div className="break-all text-base text-white">{description}</div> */}
+        <div className="flex flex-1 flex-row items-center">
+          <div className="mx-auto text-base text-white">{description}</div>
+        </div>
       </div>
     </div>
   );

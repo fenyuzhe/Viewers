@@ -37,7 +37,16 @@ const StudyBrowser = ({
   const getTabContent = () => {
     const tabData = tabs.find(tab => tab.name === activeTabName);
     return tabData.studies.map(
-      ({ studyInstanceUid, date, description, numInstances, modalities, displaySets }) => {
+      ({
+        studyInstanceUid,
+        date,
+        description,
+        numInstances,
+        modalities,
+        patientName,
+        accessionNumber,
+        displaySets,
+      }) => {
         const isExpanded = expandedStudyInstanceUIDs.includes(studyInstanceUid);
         return (
           <React.Fragment key={studyInstanceUid}>
@@ -46,6 +55,8 @@ const StudyBrowser = ({
               description={description}
               numInstances={numInstances}
               modalities={modalities}
+              patientName={patientName}
+              accessionNumber={accessionNumber}
               trackedSeries={getTrackedSeries(displaySets)}
               isActive={isExpanded}
               onClick={() => {
