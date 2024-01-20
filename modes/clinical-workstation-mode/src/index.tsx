@@ -1,6 +1,13 @@
 import { hotkeys } from '@ohif/core';
 import { id } from './id';
-import { initToolGroups, toolbarButtons } from '@ohif/mode-longitudinal';
+import toolbarButtons from './toolbarButtons';
+import initToolGroups from './initToolGroups';
+import moreTools from './moreTools';
+import moreToolsMpr from './moreToolsMpr';
+import i18n from 'i18next';
+
+const DEFAULT_TOOL_GROUP_ID = 'default';
+const MPR_TOOL_GROUP_ID = 'mpr';
 
 const ohif = {
   layout: '@ohif/extension-default.layoutTemplateModule.viewerLayout',
@@ -24,6 +31,7 @@ const extensionDependencies = {
 };
 
 function modeFactory({ modeConfiguration }) {
+  let _activatePanelTriggersSubscriptions = [];
   return {
     /**
      * Mode ID, which should be unique among modes used by the viewer. This ID
@@ -35,13 +43,14 @@ function modeFactory({ modeConfiguration }) {
      * Mode name, which is displayed in the viewer's UI in the workList, for the
      * user to select the mode.
      */
-    displayName: 'Clinical Viewer',
+    displayName: i18n.t('Modes:Clinical Viewer'),
     /**
      * Runs when the Mode Route is mounted to the DOM. Usually used to initialize
      * Services and other resources.
      */
     onModeEnter: ({ servicesManager, extensionManager, commandsManager }) => {
-      const { measurementService, toolbarService, toolGroupService } = servicesManager.services;
+      const { measurementService, toolbarService, toolGroupService, customizationService } =
+        servicesManager.services;
 
       measurementService.clearMeasurements();
 
@@ -49,21 +58,23 @@ function modeFactory({ modeConfiguration }) {
       initToolGroups(extensionManager, toolGroupService, commandsManager);
 
       let unsubscribe;
+      toolbarService.setDefaultTool({
+        groupId: 'WindowLevel',
+        itemId: 'WindowLevel',
+        interactionType: 'tool',
+        commands: [
+          {
+            commandName: 'setToolActive',
+            commandOptions: {
+              toolName: 'WindowLevel',
+            },
+            context: 'CORNERSTONE',
+          },
+        ],
+      });
 
       const activateTool = () => {
-        toolbarService.recordInteraction({
-          groupId: 'WindowLevel',
-          interactionType: 'tool',
-          commands: [
-            {
-              commandName: 'setToolActive',
-              commandOptions: {
-                toolName: 'WindowLevel',
-              },
-              context: 'CORNERSTONE',
-            },
-          ],
-        });
+        toolbarService.recordInteraction(toolbarService.getDefaultTool());
 
         // We don't need to reset the active tool whenever a viewport is getting
         // added to the toolGroup.
@@ -78,8 +89,18 @@ function modeFactory({ modeConfiguration }) {
       ));
 
       toolbarService.init(extensionManager);
-      toolbarService.addButtons(toolbarButtons);
-      toolbarService.createButtonSection('primary', [
+      toolbarService.addButtons([...toolbarButtons, ...moreTools, ...moreToolsMpr]);
+      toolbarService.createButtonSection(DEFAULT_TOOL_GROUP_ID, [
+        'MeasurementTools',
+        'Zoom',
+        'WindowLevel',
+        'Pan',
+        'Capture',
+        'Layout',
+        'MPR',
+        'MoreTools',
+      ]);
+      toolbarService.createButtonSection(MPR_TOOL_GROUP_ID, [
         'MeasurementTools',
         'Zoom',
         'WindowLevel',
@@ -88,7 +109,13 @@ function modeFactory({ modeConfiguration }) {
         'Layout',
         'MPR',
         'Crosshairs',
-        'MoreTools',
+        'MoreToolsMpr',
+      ]);
+      customizationService.addModeCustomizations([
+        {
+          id: 'segmentation.disableEditing',
+          value: true,
+        },
       ]);
     },
     onModeExit: ({ servicesManager }) => {
@@ -99,6 +126,9 @@ function modeFactory({ modeConfiguration }) {
         segmentationService,
         cornerstoneViewportService,
       } = servicesManager.services;
+
+      _activatePanelTriggersSubscriptions.forEach(sub => sub.unsubscribe());
+      _activatePanelTriggersSubscriptions = [];
 
       toolGroupService.destroy();
       syncGroupService.destroy();
@@ -130,7 +160,7 @@ function modeFactory({ modeConfiguration }) {
     routes: [
       {
         path: 'clinical',
-        layoutTemplate: ({ location, servicesManager }) => {
+        layoutTemplate: () => {
           return {
             id: ohif.layout,
             props: {
@@ -151,10 +181,12 @@ function modeFactory({ modeConfiguration }) {
     extensions: extensionDependencies,
     /** HangingProtocol used by the mode */
     // hangingProtocol: [''],
+    hangingProtocol: 'default',
     /** SopClassHandlers used by the mode */
     sopClassHandlers: [ohif.sopClassHandler],
     /** hotkeys for mode */
     hotkeys: [...hotkeys.defaults.hotkeyBindings],
+    ...modeConfiguration,
   };
 }
 
@@ -165,3 +197,4 @@ const mode = {
 };
 
 export default mode;
+export { initToolGroups, toolbarButtons };
