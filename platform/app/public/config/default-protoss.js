@@ -113,7 +113,7 @@ window.config = {
           title: 'Slice Thickness',
           condition: ({ instance }) =>
             instance && instance.SliceThickness && instance.ImagePositionPatient,
-          contentF: ({ instance, formatters: { formatNumberPrecision, splitStr } }) => {
+          contentF: ({ instance, formatters: { formatNumberPrecision } }) => {
             // 分割 ImagePositionPatient 字符串，选择 Z 轴值
             const ImagePositionPatient = instance.ImagePositionPatient;
             const zAxisValue = ImagePositionPatient[2];
