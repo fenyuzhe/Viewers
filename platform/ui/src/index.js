@@ -28,6 +28,8 @@ export {
   ViewportGridContext,
   ViewportGridProvider,
   useViewportGrid,
+  SelectedPatientProvider,
+  useSelectedPatient,
   UserAuthenticationContext,
   UserAuthenticationProvider,
   useUserAuthentication,

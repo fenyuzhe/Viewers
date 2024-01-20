@@ -7,6 +7,8 @@ import arrowLeftSmall from './../../assets/icons/arrow-left-small.svg';
 import arrowRightSmall from './../../assets/icons/arrow-right-small.svg';
 import calendar from './../../assets/icons/calendar.svg';
 import cancel from './../../assets/icons/cancel.svg';
+import reports from './../../assets/icons/reports.svg';
+import images from './../../assets/icons/images.svg';
 import clipboard from './../../assets/icons/clipboard.svg';
 import close from './../../assets/icons/closeIcon.svg';
 import dottedCircle from './../../assets/icons/dotted-circle.svg';
@@ -152,6 +154,8 @@ const ICONS = {
   'arrow-right-small': arrowRightSmall,
   calendar: calendar,
   cancel: cancel,
+  reports: reports,
+  images: images,
   clipboard: clipboard,
   close: close,
   'dotted-circle': dottedCircle,
