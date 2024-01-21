@@ -4,7 +4,7 @@ import { StudyBrowser, useImageViewer, useViewportGrid } from '@ohif/ui';
 import { utils } from '@ohif/core';
 import { useNavigate } from 'react-router-dom';
 
-const { sortStudyInstances, formatDate } = utils;
+const { sortStudyInstances, sortStudySeries, formatDate } = utils;
 
 /**
  *
@@ -140,7 +140,6 @@ function PanelStudyBrowser({
     }
     const mappedDisplaySets = _mapDisplaySets(currentDisplaySets, thumbnailImageSrcMap);
     sortStudyInstances(mappedDisplaySets);
-
     setDisplaySets(mappedDisplaySets);
   }, [StudyInstanceUIDs, thumbnailImageSrcMap, displaySetService]);
 
@@ -201,7 +200,6 @@ function PanelStudyBrowser({
           displaySetService.getActiveDisplaySets(),
           thumbnailImageSrcMap
         );
-
         setDisplaySets(mappedDisplaySets);
       }
     );
@@ -362,9 +360,7 @@ function _createStudyBrowserTabs(
     const displaySetsForStudy = displaySets.filter(
       ds => ds.StudyInstanceUID === study.studyInstanceUid
     );
-    // Sort them
-    const dsSortFn = hangingProtocolService.getDisplaySetSortFunction();
-    displaySetsForStudy.sort(dsSortFn);
+    sortStudySeries(displaySetsForStudy);
     const tabStudy = Object.assign({}, study, {
       displaySets: displaySetsForStudy,
     });

@@ -1,16 +1,40 @@
 import isLowPriorityModality from './isLowPriorityModality';
 
+// const compareSeriesDateTime = (a, b) => {
+//   const seriesDateA = Date.parse(`${a.seriesDate ?? a.SeriesDate} ${a.seriesTime ?? a.SeriesTime}`);
+//   const seriesDateB = Date.parse(`${a.seriesDate ?? a.SeriesDate} ${a.seriesTime ?? a.SeriesTime}`);
+//   return seriesDateA - seriesDateB;
+// };
 const compareSeriesDateTime = (a, b) => {
-  const seriesDateA = Date.parse(`${a.seriesDate ?? a.SeriesDate} ${a.seriesTime ?? a.SeriesTime}`);
-  const seriesDateB = Date.parse(`${a.seriesDate ?? a.SeriesDate} ${a.seriesTime ?? a.SeriesTime}`);
+  const dateA = parseDateTimeString(
+    `${a.SeriesDate ?? a.seriesDate}`,
+    `${a.SeriesTime ?? a.seriesTime}`
+  );
+  const seriesDateA = Date.parse(dateA);
+  const dateB = parseDateTimeString(
+    `${b.SeriesDate ?? b.seriesDate}`,
+    `${b.SeriesTime ?? b.seriesTime}`
+  );
+  const seriesDateB = Date.parse(dateB);
   return seriesDateA - seriesDateB;
+};
+
+const parseDateTimeString = (dateString, timeString) => {
+  const year = parseInt(dateString.substring(0, 4), 10);
+  const month = parseInt(dateString.substring(4, 6), 10) - 1;
+  const day = parseInt(dateString.substring(6, 8), 10);
+  const hours = parseInt(timeString.substring(0, 2), 10);
+  const minutes = parseInt(timeString.substring(2, 4), 10);
+  const seconds = parseInt(timeString.substring(4, 6), 10);
+  return new Date(year, month, day, hours, minutes, seconds);
 };
 
 const defaultSeriesSort = (a, b) => {
   const seriesNumberA = a.SeriesNumber ?? a.seriesNumber;
   const seriesNumberB = b.SeriesNumber ?? b.seriesNumber;
   if (seriesNumberA === seriesNumberB) {
-    return compareSeriesDateTime(a, b);
+    const c = compareSeriesDateTime(a, b);
+    return c;
   }
   return seriesNumberA - seriesNumberB;
 };
@@ -24,7 +48,6 @@ const defaultSeriesSort = (a, b) => {
 function seriesInfoSortingCriteria(firstSeries, secondSeries) {
   const aLowPriority = isLowPriorityModality(firstSeries.Modality ?? firstSeries.modality);
   const bLowPriority = isLowPriorityModality(secondSeries.Modality ?? secondSeries.modality);
-
   if (aLowPriority) {
     return bLowPriority ? defaultSeriesSort(secondSeries, firstSeries) : 1;
   } else if (bLowPriority) {
