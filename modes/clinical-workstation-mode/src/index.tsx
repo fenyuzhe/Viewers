@@ -91,16 +91,15 @@ function modeFactory({ modeConfiguration }) {
       toolbarService.init(extensionManager);
       toolbarService.addButtons([...toolbarButtons, ...moreTools, ...moreToolsMpr]);
       toolbarService.createButtonSection(DEFAULT_TOOL_GROUP_ID, [
-        'Reset',
-        'Layout',
         'StackScroll',
+        'Layout',
+        'Reset',
         'WindowLevel',
         'invert',
         'Pan',
         'ZoomTools',
         'MeasurementTools',
-        'ImageSliceSync',
-        'ReferenceLines', //定位线这里目前存在问题
+        'ReferenceLinesAndSyncTools',
         'Probe',
         'RotateTools',
         'cine',
@@ -108,7 +107,6 @@ function modeFactory({ modeConfiguration }) {
         'ImageOverlayViewer',
         'TagBrowser',
         'Capture',
-        // 'MoreTools',
       ]);
       toolbarService.createButtonSection(MPR_TOOL_GROUP_ID, [
         'MeasurementTools',

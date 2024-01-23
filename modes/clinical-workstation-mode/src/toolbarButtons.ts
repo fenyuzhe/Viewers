@@ -1,5 +1,6 @@
 // TODO: torn, can either bake this here; or have to create a whole new button type
 // Only ways that you can pass in a custom React component for render :l
+import type { Button, RunCommand } from '@ohif/core/types';
 import {
   // ExpandableToolbarButton,
   // ListMenu,
@@ -7,9 +8,6 @@ import {
 } from '@ohif/ui';
 import { defaults, ToolbarService } from '@ohif/core';
 import { EVENTS } from '@cornerstonejs/core';
-import type { Button, RunCommand } from '@ohif/core/types';
-
-const { windowLevelPresets } = defaults;
 
 const ReferenceLinesCommands: RunCommand = [
   {
@@ -24,6 +22,7 @@ const ReferenceLinesCommands: RunCommand = [
     context: 'CORNERSTONE',
   },
 ];
+const { windowLevelPresets } = defaults;
 const toolGroupIds = ['default', 'mpr', 'SRToolGroup'];
 
 /**
@@ -108,6 +107,19 @@ const toolbarButtons: Button[] = [
         tooltip: 'More Measure Tools',
       },
       items: [
+        ToolbarService._createToggleButton(
+          'ReferenceLines',
+          'tool-referenceLines', // change this with the new icon
+          'Reference Lines',
+          ReferenceLinesCommands,
+          'Show Reference Lines',
+          {
+            listeners: {
+              [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
+              [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
+            },
+          }
+        ),
         ToolbarService._createToolButton(
           'Length',
           'tool-length',
@@ -269,6 +281,69 @@ const toolbarButtons: Button[] = [
             },
           ],
           'Rectangle'
+        ),
+      ],
+    },
+  },
+  // ReferenceLines + ImageSliceSync
+  {
+    id: 'ReferenceLinesAndSyncTools',
+    type: 'ohif.splitButton',
+    props: {
+      groupId: 'ReferenceLinesAndSyncTools',
+      isRadio: true, // ?
+      // Switch?
+      primary: ToolbarService._createToggleButton(
+        'ReferenceLines',
+        'tool-referenceLines', // change this with the new icon
+        'Reference Lines',
+        ReferenceLinesCommands,
+        'Show Reference Lines',
+        {
+          listeners: {
+            [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
+            [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
+          },
+        }
+      ),
+      secondary: {
+        icon: 'chevron-down',
+        label: '',
+        isActive: true,
+        tooltip: '定位线和图像同步',
+      },
+      items: [
+        ToolbarService._createToggleButton(
+          'ReferenceLines',
+          'tool-referenceLines', // change this with the new icon
+          'Reference Lines',
+          ReferenceLinesCommands,
+          'Show Reference Lines',
+          {
+            listeners: {
+              [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
+              [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
+            },
+          }
+        ),
+        ToolbarService._createToggleButton(
+          'ImageSliceSync',
+          'link',
+          '图像切片同步',
+          [
+            {
+              commandName: 'toggleImageSliceSync',
+            },
+          ],
+          'Enable position synchronization on stack viewports',
+          {
+            listeners: {
+              [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
+                commandName: 'toggleImageSliceSync',
+                commandOptions: { toggledState: true },
+              },
+            },
+          }
         ),
       ],
     },
@@ -595,24 +670,23 @@ const toolbarButtons: Button[] = [
       },
     },
   },
-  // ReferenceLines 定位线这里目前存在问题
-  {
-    id: 'ReferenceLines',
-    type: 'ohif.radioGroup',
-    props: {
-      type: 'toggle',
-      icon: 'tool-referenceLines',
-      label: 'Reference Lines',
-      commands: ReferenceLinesCommands,
-      tooltip: 'Show Reference Lines',
-      extraOptions: {
-        listeners: {
-          [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
-          [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
-        },
-      },
-    },
-  },
+  // ReferenceLines
+  // {
+  //   id: 'ReferenceLines',
+  //   type: 'ohif.radioGroup',
+  //   props: {
+  //     type: 'toggle',
+  //     icon: 'tool-referenceLines',
+  //     label: 'Reference Lines',
+  //     commands: ReferenceLinesCommands,
+  //     extraOptions: {
+  //       listeners: {
+  //         [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
+  //         [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
+  //       },
+  //     },
+  //   },
+  // },
   // ImageOverlayViewer 暂时存在问题  点击无作用
   {
     id: 'ImageOverlayViewer',
@@ -640,7 +714,7 @@ const toolbarButtons: Button[] = [
     props: {
       type: 'tool',
       icon: 'tool-stack-scroll',
-      label: 'Stack Scroll',
+      label: '滑动切换',
       commands: [
         {
           commandName: 'setToolActive',
