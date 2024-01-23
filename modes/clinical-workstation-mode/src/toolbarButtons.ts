@@ -6,9 +6,25 @@ import {
   WindowLevelMenuItem,
 } from '@ohif/ui';
 import { defaults, ToolbarService } from '@ohif/core';
-import type { Button } from '@ohif/core/types';
+import { EVENTS } from '@cornerstonejs/core';
+import type { Button, RunCommand } from '@ohif/core/types';
 
 const { windowLevelPresets } = defaults;
+
+const ReferenceLinesCommands: RunCommand = [
+  {
+    commandName: 'setSourceViewportForReferenceLinesTool',
+    context: 'CORNERSTONE',
+  },
+  {
+    commandName: 'setToolActive',
+    commandOptions: {
+      toolName: 'ReferenceLines',
+    },
+    context: 'CORNERSTONE',
+  },
+];
+const toolGroupIds = ['default', 'mpr', 'SRToolGroup'];
 
 /**
  *
@@ -33,8 +49,6 @@ function _createWwwcPreset(preset, title, subtitle) {
     ],
   };
 }
-
-const toolGroupIds = ['default', 'mpr', 'SRToolGroup'];
 
 /**
  * Creates an array of 'setToolActive' commands for the given toolName - one for
@@ -210,6 +224,52 @@ const toolbarButtons: Button[] = [
           ],
           'Circle Tool'
         ),
+        ToolbarService._createToolButton(
+          'Angle',
+          'tool-angle',
+          'Angle',
+          [
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'Angle',
+              },
+              context: 'CORNERSTONE',
+            },
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'SRAngle',
+                toolGroupId: 'SRToolGroup',
+              },
+              context: 'CORNERSTONE',
+            },
+          ],
+          'Angle'
+        ),
+        ToolbarService._createToolButton(
+          'Rectangle',
+          'tool-rectangle',
+          'Rectangle',
+          [
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'RectangleROI',
+              },
+              context: 'CORNERSTONE',
+            },
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'SRRectangleROI',
+                toolGroupId: 'SRToolGroup',
+              },
+              context: 'CORNERSTONE',
+            },
+          ],
+          'Rectangle'
+        ),
       ],
     },
   },
@@ -222,6 +282,25 @@ const toolbarButtons: Button[] = [
       icon: 'tool-zoom',
       label: 'Zoom',
       commands: _createSetToolActiveCommands('Zoom'),
+    },
+  },
+  // Magnify
+  {
+    id: 'Magnify',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'tool',
+      icon: 'tool-magnify',
+      label: 'Magnify',
+      commands: [
+        {
+          commandName: 'setToolActive',
+          commandOptions: {
+            toolName: 'Magnify',
+          },
+          context: 'CORNERSTONE',
+        },
+      ],
     },
   },
   // Window Level + Presets...
@@ -262,6 +341,52 @@ const toolbarButtons: Button[] = [
       ],
     },
   },
+  // Zoom + Magnify
+  {
+    id: 'ZoomTools',
+    type: 'ohif.splitButton',
+    props: {
+      groupId: 'ZoomTools',
+      isRadio: true,
+      primary: ToolbarService._createToolButton(
+        'Zoom',
+        'tool-zoom',
+        'Zoom',
+        _createSetToolActiveCommands('Zoom'),
+        'Zoom'
+      ),
+      secondary: {
+        icon: 'chevron-down',
+        label: '',
+        isActive: true,
+        tooltip: '更多放大工具',
+      },
+      items: [
+        ToolbarService._createToolButton(
+          'Zoom',
+          'tool-zoom',
+          'Zoom',
+          _createSetToolActiveCommands('Zoom'),
+          'Zoom'
+        ),
+        ToolbarService._createToolButton(
+          'Magnify',
+          'tool-magnify',
+          'Magnify',
+          [
+            {
+              commandName: 'setToolActive',
+              commandOptions: {
+                toolName: 'Magnify',
+              },
+              context: 'CORNERSTONE',
+            },
+          ],
+          'Magnify'
+        ),
+      ],
+    },
+  },
   // Pan...
   {
     id: 'Pan',
@@ -273,6 +398,7 @@ const toolbarButtons: Button[] = [
       commands: _createSetToolActiveCommands('Pan'),
     },
   },
+  // Capture...
   {
     id: 'Capture',
     type: 'ohif.action',
@@ -289,14 +415,16 @@ const toolbarButtons: Button[] = [
       ],
     },
   },
+  // Layout..
   {
     id: 'Layout',
     type: 'ohif.layoutSelector',
     props: {
-      rows: 3,
-      columns: 3,
+      rows: 5,
+      columns: 5,
     },
   },
+  // MPR
   {
     id: 'MPR',
     type: 'ohif.action',
@@ -315,6 +443,7 @@ const toolbarButtons: Button[] = [
       ],
     },
   },
+  // Crosshairs
   {
     id: 'Crosshairs',
     type: 'ohif.radioGroup',
@@ -330,6 +459,283 @@ const toolbarButtons: Button[] = [
             toolGroupId: 'mpr',
           },
           context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // Reset
+  {
+    id: 'Reset',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'action',
+      icon: 'tool-reset',
+      label: 'Reset View',
+      commands: [
+        {
+          commandName: 'resetViewport',
+          commandOptions: {},
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // rotate-right
+  {
+    id: 'rotate-right',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'action',
+      icon: 'tool-rotate-right',
+      label: 'Rotate Right',
+      commands: [
+        {
+          commandName: 'rotateViewportCW',
+          commandOptions: {},
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // flip-horizontal
+  {
+    id: 'flip-horizontal',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'action',
+      icon: 'tool-flip-horizontal',
+      label: 'Flip Horizontally',
+      commands: [
+        {
+          commandName: 'flipViewportHorizontal',
+          commandOptions: {},
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // rotate-right + flip-horizontal
+  {
+    id: 'RotateTools',
+    type: 'ohif.splitButton',
+    props: {
+      groupId: 'RotateTools',
+      isRadio: true,
+      primary: ToolbarService._createActionButton(
+        'rotate-right',
+        'tool-rotate-right',
+        'Rotate Right',
+        [
+          {
+            commandName: 'rotateViewportCW',
+            commandOptions: {},
+            context: 'CORNERSTONE',
+          },
+        ],
+        'Rotate +90'
+      ),
+      secondary: {
+        icon: 'chevron-down',
+        label: '',
+        isActive: true,
+        tooltip: '更多翻转工具',
+      },
+      items: [
+        ToolbarService._createActionButton(
+          'rotate-right',
+          'tool-rotate-right',
+          'Rotate Right',
+          [
+            {
+              commandName: 'rotateViewportCW',
+              commandOptions: {},
+              context: 'CORNERSTONE',
+            },
+          ],
+          'Rotate +90'
+        ),
+        ToolbarService._createActionButton(
+          'flip-horizontal',
+          'tool-flip-horizontal',
+          'Flip Horizontally',
+          [
+            {
+              commandName: 'flipViewportHorizontal',
+              commandOptions: {},
+              context: 'CORNERSTONE',
+            },
+          ],
+          'Flip Horizontal'
+        ),
+      ],
+    },
+  },
+  // StackImageSync
+  {
+    id: 'StackImageSync',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'toggle',
+      icon: 'link',
+      label: 'Stack Image Sync',
+      commands: [
+        {
+          commandName: 'toggleStackImageSync',
+        },
+      ],
+      tooltip: 'Enable position synchronization on stack viewports',
+      extraOptions: {
+        listeners: {
+          [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
+            commandName: 'toggleStackImageSync',
+            commandOptions: { toggledState: true },
+          },
+        },
+        isActive: true,
+      },
+    },
+  },
+  // ReferenceLines 定位线这里目前存在问题
+  {
+    id: 'ReferenceLines',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'toggle',
+      icon: 'tool-referenceLines',
+      label: 'Reference Lines',
+      commands: ReferenceLinesCommands,
+      tooltip: 'Show Reference Lines',
+      extraOptions: {
+        listeners: {
+          [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
+          [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
+        },
+      },
+    },
+  },
+  // ImageOverlayViewer 暂时存在问题  点击无作用
+  {
+    id: 'ImageOverlayViewer',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'toggle',
+      icon: 'toggle-dicom-overlay',
+      label: '覆盖层隐藏',
+      commands: [
+        {
+          commandName: 'setToolActive',
+          commandOptions: {
+            toolName: 'ImageOverlayViewer',
+          },
+          context: 'CORNERSTONE',
+        },
+      ],
+      extraOptions: { isActive: true },
+    },
+  },
+  // StackScroll
+  {
+    id: 'StackScroll',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'tool',
+      icon: 'tool-stack-scroll',
+      label: 'Stack Scroll',
+      commands: [
+        {
+          commandName: 'setToolActive',
+          commandOptions: {
+            toolName: 'StackScroll',
+          },
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // invert
+  {
+    id: 'invert',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'action',
+      icon: 'tool-invert',
+      label: 'Invert',
+      commands: [
+        {
+          commandName: 'invertViewport',
+          commandOptions: {},
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // Probe
+  {
+    id: 'Probe',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'tool',
+      icon: 'tool-probe',
+      label: 'Probe',
+      commands: [
+        {
+          commandName: 'setToolActive',
+          commandOptions: {
+            toolName: 'DragProbe',
+          },
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // cine
+  {
+    id: 'cine',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'toggle',
+      icon: 'tool-cine',
+      label: 'Cine',
+      commands: [
+        {
+          commandName: 'toggleCine',
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // CalibrationLine
+  {
+    id: 'CalibrationLine',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'tool',
+      icon: 'tool-calibration',
+      label: 'Calibration',
+      commands: [
+        {
+          commandName: 'setToolActive',
+          commandOptions: {
+            toolName: 'CalibrationLine',
+          },
+          context: 'CORNERSTONE',
+        },
+      ],
+    },
+  },
+  // TagBrowser
+  {
+    id: 'TagBrowser',
+    type: 'ohif.radioGroup',
+    props: {
+      type: 'action',
+      icon: 'list-bullets',
+      label: 'Dicom标签',
+      commands: [
+        {
+          commandName: 'openDICOMTagViewer',
+          commandOptions: {},
+          context: 'DEFAULT',
         },
       ],
     },
