@@ -570,28 +570,28 @@ const toolbarButtons: Button[] = [
       ],
     },
   },
-  // StackImageSync
+  // ImageSliceSync
   {
-    id: 'StackImageSync',
+    id: 'ImageSliceSync',
     type: 'ohif.radioGroup',
     props: {
       type: 'toggle',
       icon: 'link',
-      label: 'Stack Image Sync',
+      label: '图像切片同步',
       commands: [
         {
-          commandName: 'toggleStackImageSync',
+          commandName: 'toggleImageSliceSync',
         },
       ],
       tooltip: 'Enable position synchronization on stack viewports',
       extraOptions: {
         listeners: {
           [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
-            commandName: 'toggleStackImageSync',
+            commandName: 'toggleImageSliceSync',
             commandOptions: { toggledState: true },
           },
+          isActive: true,
         },
-        isActive: true,
       },
     },
   },

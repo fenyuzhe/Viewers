@@ -99,7 +99,7 @@ function modeFactory({ modeConfiguration }) {
         'Pan',
         'ZoomTools',
         'MeasurementTools',
-        'StackImageSync',
+        'ImageSliceSync',
         'ReferenceLines', //定位线这里目前存在问题
         'Probe',
         'RotateTools',
