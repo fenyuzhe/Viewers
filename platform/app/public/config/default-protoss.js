@@ -169,6 +169,7 @@ window.config = {
   showWarningMessageForCrossOrigin: false,
   showCPUFallbackMessage: true,
   showLoadingIndicator: true,
+  useSharedArrayBuffer: 'AUTO',
   strictZSpacingForVolumeViewport: true,
   maxNumRequests: {
     interaction: 100,
