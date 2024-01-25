@@ -103,7 +103,7 @@ function modeFactory({ modeConfiguration }) {
         'RotateTools',
         'cine',
         'MPR',
-        'ImageOverlayViewer',
+        // 'ImageOverlayViewer',
         'TagBrowser',
         'Capture',
         'Reset',
