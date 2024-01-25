@@ -694,7 +694,7 @@ const toolbarButtons: Button[] = [
     props: {
       type: 'toggle',
       icon: 'toggle-dicom-overlay',
-      label: '覆盖层隐藏',
+      label: '标签隐藏',
       commands: [
         {
           commandName: 'setToolActive',

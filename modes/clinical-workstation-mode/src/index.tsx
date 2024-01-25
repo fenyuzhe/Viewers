@@ -93,7 +93,6 @@ function modeFactory({ modeConfiguration }) {
       toolbarService.createButtonSection(DEFAULT_TOOL_GROUP_ID, [
         'StackScroll',
         'Layout',
-        'Reset',
         'WindowLevel',
         'invert',
         'Pan',
@@ -107,6 +106,7 @@ function modeFactory({ modeConfiguration }) {
         'ImageOverlayViewer',
         'TagBrowser',
         'Capture',
+        'Reset',
       ]);
       toolbarService.createButtonSection(MPR_TOOL_GROUP_ID, [
         'MeasurementTools',
