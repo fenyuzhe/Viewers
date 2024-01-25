@@ -121,10 +121,10 @@ function CornerstoneViewportOverlay({
 
       return (
         <div className="flex flex-row text-base">
-          <span className="mr-1">W:</span>
-          <span className="ml-1 mr-2 font-light">{windowWidth.toFixed(0)}</span>
-          <span className="mr-1">L:</span>
-          <span className="ml-1 font-light">{windowCenter.toFixed(0)}</span>
+          <span className="mr-1">WL:</span>
+          <span className="ml-1 mr-2 font-light">{windowCenter.toFixed(0)}</span>
+          <span className="mr-1">WW:</span>
+          <span className="ml-1 font-light">{windowWidth.toFixed(0)}</span>
         </div>
       );
     }
@@ -166,7 +166,7 @@ function CornerstoneViewportOverlay({
 
     return (
       <div className="flex flex-row text-base">
-        <span className="mr-1">I:</span>
+        <span className="mr-1">Im:</span>
         <span className="font-light">
           {instanceNumber !== undefined
             ? `${instanceNumber} (${imageIndex + 1}/${numberOfSlices})`
