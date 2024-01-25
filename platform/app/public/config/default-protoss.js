@@ -166,7 +166,7 @@ window.config = {
   // some windows systems have issues with more than 3 web workers
   maxNumberOfWebWorkers: 3,
   // below flag is for performance reasons, but it might not work for all servers
-  showWarningMessageForCrossOrigin: true,
+  showWarningMessageForCrossOrigin: false,
   showCPUFallbackMessage: true,
   showLoadingIndicator: true,
   strictZSpacingForVolumeViewport: true,
@@ -184,8 +184,8 @@ window.config = {
       configuration: {
         friendlyName: 'WADORS Server',
         name: 'WADORS',
-        qidoRoot: 'http://localhost:8080/dicomweb',
-        wadoRoot: 'http://localhost:8080/dicomweb',
+        qidoRoot: 'http://192.168.1.170:8080/dicomweb',
+        wadoRoot: 'http://192.168.1.170:8080/dicomweb',
         qidoSupportsIncludeField: false,
         imageRendering: 'wadors',
         thumbnailRendering: 'wadors',
@@ -321,7 +321,7 @@ window.config = {
       keys: ['9'],
     },
   ],
-  patientListUrl: 'http://localhost:8080/patientlist',
+  patientListUrl: 'http://192.168.1.170:8080/patientlist',
   pdfReportUrl: 'http://192.168.1.179:8080/ncpacsservice/reportPicServlet',
   showPdfVierportBar: true,
 };
