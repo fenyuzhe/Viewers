@@ -102,6 +102,11 @@ window.config = {
       id: 'cornerstoneOverlayBottomLeft',
       items: [
         {
+          id: 'CtValue',
+          customizationType: 'ohif.overlayItem.ctValue',
+          color: '#ff9696',
+        },
+        {
           id: 'WindowLevel',
           customizationType: 'ohif.overlayItem.windowLevel',
           color: '#ff9696',

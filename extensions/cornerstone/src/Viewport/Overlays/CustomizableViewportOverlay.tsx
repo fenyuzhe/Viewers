@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { vec3 } from 'gl-matrix';
 import PropTypes from 'prop-types';
-import { metaData, Enums, utilities, Types, cache } from '@cornerstonejs/core';
+import { metaData, Enums, utilities } from '@cornerstonejs/core';
 import { ViewportOverlay } from '@ohif/ui';
 import { formatPN, formatDICOMDate, formatDICOMTime, formatNumberPrecision } from './utils';
 import { InstanceMetadata } from 'platform/core/src/types';
@@ -30,6 +30,11 @@ interface OverlayItemProps {
   voi: {
     windowWidth: number;
     windowCenter: number;
+  };
+  ctValue: {
+    x: number;
+    y: number;
+    value?: number;
   };
   instanceNumber?: number;
   scale?: number;
@@ -73,6 +78,31 @@ function ZoomOverlayItem({ scale, customization }: OverlayItemProps) {
 }
 
 /**
+ *
+ * CT Value Overlay item
+ */
+function CTValueOverlayItem({ ctValue, customization }: OverlayItemProps) {
+  if (ctValue === undefined || ctValue === null) {
+    return null;
+  }
+  const { x, y, value } = ctValue;
+  return (
+    <div
+      className="overlay-item flex flex-row"
+      style={{ color: (customization && customization.color) || undefined }}
+    >
+      {/* <span className="mr-1 shrink-0">Im:</span> */}
+      <span className="font-light">
+        {value !== undefined && value !== null
+          ? // ? `${instanceNumber} (${imageIndex + 1}/${numberOfSlices})`
+            `X: ${x.toFixed(0)} Y: ${y.toFixed(0)} Val: ${value}`
+          : ``}
+      </span>
+    </div>
+  );
+}
+
+/**
  * Instance Number Overlay Item
  */
 function InstanceNumberOverlayItem({
@@ -111,6 +141,7 @@ function CustomizableViewportOverlay({
   const { toolbarService, cornerstoneViewportService, customizationService } =
     servicesManager.services;
   const [voi, setVOI] = useState({ windowCenter: null, windowWidth: null });
+  const [ctValue, setCtValue] = useState(null);
   const [scale, setScale] = useState(1);
   const [activeTools, setActiveTools] = useState([]);
   const { imageIndex } = imageSliceData;
@@ -153,39 +184,27 @@ function CustomizableViewportOverlay({
   useEffect(() => {
     function getValue(volume, worldPos) {
       const { dimensions, scalarData, imageData } = volume;
-
       const index = imageData.worldToIndex(worldPos);
-
       index[0] = Math.floor(index[0]);
       index[1] = Math.floor(index[1]);
       index[2] = Math.floor(index[2]);
-
       if (!utilities.indexWithinDimensions(index, dimensions)) {
         return;
       }
-
       const yMultiple = dimensions[0];
       const zMultiple = dimensions[0] * dimensions[1];
-
       const value = scalarData[index[2] * zMultiple + index[1] * yMultiple + index[0]];
-
-      return value;
+      const cv = { x: index[0], y: index[1], value: value };
+      return cv;
     }
     const updateHu = evt => {
       const viewport = cornerstoneViewportService.getCornerstoneViewport(viewportId);
       const volume = viewport.getImageData();
-      // console.log(volume);
-      // const viewportInfo = cornerstoneViewportService.getViewportInfo(viewportId);
-      // console.log('viewportData:', viewportData);
-      // console.log('viewport:', viewport);
-      // console.log('viewportInfo:', viewportInfo);
-      // console.log(viewport.Volumes());
-
       const rect = element.getBoundingClientRect();
       const canvasPos = [Math.floor(evt.clientX - rect.left), Math.floor(evt.clientY - rect.top)];
       const worldPos = viewport.canvasToWorld(canvasPos);
       const ctValue = getValue(volume, worldPos);
-      console.log('ctValue:', worldPos[1].toFixed(2), worldPos[2].toFixed(2), ctValue);
+      setCtValue(ctValue);
     };
 
     element.addEventListener('mousemove', updateHu);
@@ -193,7 +212,7 @@ function CustomizableViewportOverlay({
     return () => {
       element.removeEventListener('mousemove', updateHu);
     };
-  }, [viewportId, viewportData, element, cornerstoneViewportService]);
+  }, [viewportId, ctValue, viewportData, element, cornerstoneViewportService]);
 
   /**
    * Updating the VOI when the viewport changes its voi
@@ -296,6 +315,7 @@ function CustomizableViewportOverlay({
         instance,
         // calculated
         voi,
+        ctValue,
         scale,
         instanceNumber,
       };
@@ -306,6 +326,8 @@ function CustomizableViewportOverlay({
         return <ZoomOverlayItem {...overlayItemProps} />;
       } else if (item.customizationType === 'ohif.overlayItem.instanceNumber') {
         return <InstanceNumberOverlayItem {...overlayItemProps} />;
+      } else if (item.customizationType === 'ohif.overlayItem.ctValue') {
+        return <CTValueOverlayItem {...overlayItemProps} />;
       } else {
         const renderItem = customizationService.transform(item);
 
@@ -323,6 +345,7 @@ function CustomizableViewportOverlay({
       customizationService,
       instance,
       voi,
+      ctValue,
       scale,
       instanceNumber,
     ]
@@ -333,6 +356,10 @@ function CustomizableViewportOverlay({
       {
         id: 'WindowLevel',
         customizationType: 'ohif.overlayItem.windowLevel',
+      },
+      {
+        id: 'CtValue',
+        customizationType: 'ohif.overlayItem.ctValue',
       },
     ];
     return (
