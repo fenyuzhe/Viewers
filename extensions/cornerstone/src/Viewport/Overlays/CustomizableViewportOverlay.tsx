@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { vec3 } from 'gl-matrix';
 import PropTypes from 'prop-types';
-import { metaData, Enums, utilities } from '@cornerstonejs/core';
+import { metaData, Enums, utilities, Types, cache } from '@cornerstonejs/core';
 import { ViewportOverlay } from '@ohif/ui';
 import { formatPN, formatDICOMDate, formatDICOMTime, formatNumberPrecision } from './utils';
 import { InstanceMetadata } from 'platform/core/src/types';
@@ -49,10 +49,10 @@ function VOIOverlayItem({ voi, customization }: OverlayItemProps) {
       className="overlay-item flex flex-row"
       style={{ color: (customization && customization.color) || undefined }}
     >
-      <span className="mr-1 shrink-0">W:</span>
-      <span className="ml-1 mr-2 shrink-0 font-light">{windowWidth.toFixed(0)}</span>
-      <span className="mr-1 shrink-0">L:</span>
-      <span className="ml-1 shrink-0 font-light">{windowCenter.toFixed(0)}</span>
+      <span className="mr-1 shrink-0">WL:</span>
+      <span className="ml-1 mr-2 shrink-0 font-light">{windowCenter.toFixed(0)}</span>
+      <span className="mr-1 shrink-0">WW:</span>
+      <span className="ml-1 shrink-0 font-light">{windowWidth.toFixed(0)}</span>
     </div>
   );
 }
@@ -87,10 +87,11 @@ function InstanceNumberOverlayItem({
       className="overlay-item flex flex-row"
       style={{ color: (customization && customization.color) || undefined }}
     >
-      <span className="mr-1 shrink-0">I:</span>
+      <span className="mr-1 shrink-0">Im:</span>
       <span className="font-light">
         {instanceNumber !== undefined && instanceNumber !== null
-          ? `${instanceNumber} (${imageIndex + 1}/${numberOfSlices})`
+          ? // ? `${instanceNumber} (${imageIndex + 1}/${numberOfSlices})`
+            `${imageIndex + 1}/${numberOfSlices}`
           : `${imageIndex + 1}/${numberOfSlices}`}
       </span>
     </div>
@@ -143,11 +144,56 @@ function CustomizableViewportOverlay({
   }, [viewportData, viewportId, imageIndex, cornerstoneViewportService]);
 
   /**
-   * Initial toolbar state
+   * Initial toolbar statevolumeData
    */
   useEffect(() => {
     setActiveTools(toolbarService.getActiveTools());
   }, []);
+
+  useEffect(() => {
+    function getValue(volume, worldPos) {
+      const { dimensions, scalarData, imageData } = volume;
+
+      const index = imageData.worldToIndex(worldPos);
+
+      index[0] = Math.floor(index[0]);
+      index[1] = Math.floor(index[1]);
+      index[2] = Math.floor(index[2]);
+
+      if (!utilities.indexWithinDimensions(index, dimensions)) {
+        return;
+      }
+
+      const yMultiple = dimensions[0];
+      const zMultiple = dimensions[0] * dimensions[1];
+
+      const value = scalarData[index[2] * zMultiple + index[1] * yMultiple + index[0]];
+
+      return value;
+    }
+    const updateHu = evt => {
+      const viewport = cornerstoneViewportService.getCornerstoneViewport(viewportId);
+      const volume = viewport.getImageData();
+      // console.log(volume);
+      // const viewportInfo = cornerstoneViewportService.getViewportInfo(viewportId);
+      // console.log('viewportData:', viewportData);
+      // console.log('viewport:', viewport);
+      // console.log('viewportInfo:', viewportInfo);
+      // console.log(viewport.Volumes());
+
+      const rect = element.getBoundingClientRect();
+      const canvasPos = [Math.floor(evt.clientX - rect.left), Math.floor(evt.clientY - rect.top)];
+      const worldPos = viewport.canvasToWorld(canvasPos);
+      const ctValue = getValue(volume, worldPos);
+      console.log('ctValue:', worldPos[1].toFixed(2), worldPos[2].toFixed(2), ctValue);
+    };
+
+    element.addEventListener('mousemove', updateHu);
+
+    return () => {
+      element.removeEventListener('mousemove', updateHu);
+    };
+  }, [viewportId, viewportData, element, cornerstoneViewportService]);
 
   /**
    * Updating the VOI when the viewport changes its voi
