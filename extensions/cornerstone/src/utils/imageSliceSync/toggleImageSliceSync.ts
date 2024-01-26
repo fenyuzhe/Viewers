@@ -1,12 +1,14 @@
-const IMAGE_SLICE_SYNC_NAME = 'IMAGE_SLICE_SYNC';
+// const IMAGE_SLICE_SYNC_NAME = 'IMAGE_SLICE_SYNC';
 
 export default function toggleImageSliceSync({
+  syncType,
+  option,
   toggledState,
   servicesManager,
   viewports: providedViewports,
 }) {
   if (!toggledState) {
-    return disableSync(IMAGE_SLICE_SYNC_NAME, servicesManager);
+    return disableSync(syncType, servicesManager);
   }
 
   const { syncGroupService, viewportGridService, displaySetService, cornerstoneViewportService } =
@@ -22,12 +24,7 @@ export default function toggleImageSliceSync({
     if (!viewport) {
       return;
     }
-    syncGroupService.addViewportToSyncGroup(viewportId, viewport.getRenderingEngine().id, {
-      type: 'stackimage',
-      id: IMAGE_SLICE_SYNC_NAME,
-      source: true,
-      target: true,
-    });
+    syncGroupService.addViewportToSyncGroup(viewportId, viewport.getRenderingEngine().id, option);
   });
 }
 

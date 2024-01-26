@@ -566,10 +566,12 @@ function commandsModule({
       viewportGridService.setActiveViewportId(viewportIds[nextViewportIndex] as string);
     },
 
-    toggleImageSliceSync: ({ toggledState }) => {
+    toggleImageSliceSync: ({ syncType, option, toggledState }) => {
       toggleImageSliceSync({
-        servicesManager,
+        syncType,
+        option,
         toggledState,
+        servicesManager,
       });
     },
     setSourceViewportForReferenceLinesTool: ({ toggledState, viewportId }) => {

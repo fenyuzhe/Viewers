@@ -24,6 +24,31 @@ const ReferenceLinesCommands: RunCommand = [
 ];
 const { windowLevelPresets } = defaults;
 const toolGroupIds = ['default', 'mpr', 'SRToolGroup'];
+const IMAGE_SLICE_SYNC_NAME = 'IMAGE_SLICE_SYNC';
+const IMAGE_VOI_SYNC_NAME = 'IMAGE_VOI_SYNC';
+const IMAGE_ZOOMPAN_SYNC_NAME = "IMAGE_ZOOMPAN_SYNC";
+
+const IMAGE_SLICE_SYNC_OPTION =
+{
+    type: 'stackimage',
+    id: IMAGE_SLICE_SYNC_NAME,
+    source: true,
+    target: true,
+  };
+  const IMAGE_VOI_SYNC_OPTION =
+{
+    type: 'voi',
+    id: IMAGE_VOI_SYNC_NAME,
+    source: true,
+    target: true,
+  };
+  const IMAGE_ZOOMPAN_SYNC_OPTION =
+  {
+      type: 'zoompan',
+      id: IMAGE_ZOOMPAN_SYNC_NAME,
+      source: true,
+      target: true,
+    };
 
 /**
  *
@@ -302,7 +327,7 @@ const toolbarButtons: Button[] = [
         {
           listeners: {
             [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
-            [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
+            // [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
           },
         }
       ),
@@ -322,17 +347,18 @@ const toolbarButtons: Button[] = [
           {
             listeners: {
               [EVENTS.STACK_VIEWPORT_NEW_STACK]: ReferenceLinesCommands,
-              [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
+              // [EVENTS.ACTIVE_VIEWPORT_ID_CHANGED]: ReferenceLinesCommands,
             },
           }
         ),
         ToolbarService._createToggleButton(
           'ImageSliceSync',
           'link',
-          '图像切片同步',
+          '同步切片位置',
           [
             {
               commandName: 'toggleImageSliceSync',
+              commandOptions: { syncType: IMAGE_SLICE_SYNC_NAME, option: IMAGE_SLICE_SYNC_OPTION,toggledState: true },
             },
           ],
           'Enable position synchronization on stack viewports',
@@ -340,7 +366,47 @@ const toolbarButtons: Button[] = [
             listeners: {
               [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
                 commandName: 'toggleImageSliceSync',
-                commandOptions: { toggledState: true },
+                commandOptions: { syncType: IMAGE_SLICE_SYNC_NAME, option: IMAGE_SLICE_SYNC_OPTION,toggledState: true },
+              },
+            },
+          }
+        ),
+        ToolbarService._createToggleButton(
+          'ImageVOISync',
+          'link',
+          '同步设置窗宽窗位',
+          [
+            {
+              commandName: 'toggleImageSliceSync',
+              commandOptions: { syncType: IMAGE_VOI_SYNC_NAME, option: IMAGE_VOI_SYNC_OPTION,toggledState: true },
+            },
+          ],
+          'Enable position synchronization on stack viewports',
+          {
+            listeners: {
+              [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
+                commandName: 'toggleImageSliceSync',
+                commandOptions: { syncType: IMAGE_VOI_SYNC_NAME, option: IMAGE_VOI_SYNC_OPTION,toggledState: true },
+              },
+            },
+          }
+        ),
+        ToolbarService._createToggleButton(
+          'ImageZommPanSync',
+          'link',
+          '同步设置移动放大',
+          [
+            {
+              commandName: 'toggleImageSliceSync',
+              commandOptions: { syncType: IMAGE_ZOOMPAN_SYNC_NAME, option: IMAGE_ZOOMPAN_SYNC_OPTION,toggledState: true },
+            },
+          ],
+          'Enable position synchronization on stack viewports',
+          {
+            listeners: {
+              [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
+                commandName: 'toggleImageSliceSync',
+                commandOptions: { syncType: IMAGE_ZOOMPAN_SYNC_NAME, option: IMAGE_ZOOMPAN_SYNC_OPTION,toggledState: true },
               },
             },
           }
@@ -646,30 +712,30 @@ const toolbarButtons: Button[] = [
     },
   },
   // ImageSliceSync
-  {
-    id: 'ImageSliceSync',
-    type: 'ohif.radioGroup',
-    props: {
-      type: 'toggle',
-      icon: 'link',
-      label: '图像切片同步',
-      commands: [
-        {
-          commandName: 'toggleImageSliceSync',
-        },
-      ],
-      tooltip: 'Enable position synchronization on stack viewports',
-      extraOptions: {
-        listeners: {
-          [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
-            commandName: 'toggleImageSliceSync',
-            commandOptions: { toggledState: true },
-          },
-          isActive: true,
-        },
-      },
-    },
-  },
+  // {
+  //   id: 'ImageSliceSync',
+  //   type: 'ohif.radioGroup',
+  //   props: {
+  //     type: 'toggle',
+  //     icon: 'link',
+  //     label: '图像切片同步',
+  //     commands: [
+  //       {
+  //         commandName: 'toggleImageSliceSync',
+  //       },
+  //     ],
+  //     tooltip: 'Enable position synchronization on stack viewports',
+  //     extraOptions: {
+  //       listeners: {
+  //         [EVENTS.STACK_VIEWPORT_NEW_STACK]: {
+  //           commandName: 'toggleImageSliceSync',
+  //           commandOptions: { toggledState: true },
+  //         },
+  //         isActive: true,
+  //       },
+  //     },
+  //   },
+  // },
   // ReferenceLines
   // {
   //   id: 'ReferenceLines',
