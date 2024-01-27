@@ -110,10 +110,10 @@ const Thumbnail = ({
             />
             {` ${numInstances}`}
           </div> */}
-          <DisplaySetMessageListTooltip
+          {/* <DisplaySetMessageListTooltip
             messages={messages}
             id={`display-set-tooltip-${displaySetInstanceUID}`}
-          />
+          /> */}
         </div>
         {/* <div className="break-all text-base text-white">{description}</div> */}
         <div className="flex flex-1 flex-row items-center">

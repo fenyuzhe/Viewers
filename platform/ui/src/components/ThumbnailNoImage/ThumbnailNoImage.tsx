@@ -72,10 +72,10 @@ const ThumbnailNoImage = ({
               </div>
             </Tooltip>
             <span className="ml-4 text-base text-blue-300">{seriesDate}</span>
-            <DisplaySetMessageListTooltip
+            {/* <DisplaySetMessageListTooltip
               messages={messages}
               id={`display-set-tooltip-${displaySetInstanceUID}`}
-            />
+            /> */}
           </div>
           <div className="flex flex-row">
             {canReject && (
