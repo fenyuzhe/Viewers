@@ -76,8 +76,8 @@ export class HotkeysManager {
     } catch (error) {
       const { uiNotificationService } = this._servicesManager.services;
       uiNotificationService.show({
-        title: 'Hotkeys Manager',
-        message: 'Error while setting hotkeys',
+        title: '快捷键管理',
+        message: '设置快捷键失败',
         type: 'error',
       });
     }
