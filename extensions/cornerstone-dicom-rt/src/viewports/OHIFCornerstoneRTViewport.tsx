@@ -179,8 +179,8 @@ function OHIFCornerstoneRTViewport(props) {
 
         if (evt.overlappingSegments) {
           uiNotificationService.show({
-            title: 'Overlapping Segments',
-            message: 'Overlapping segments detected which is not currently supported',
+            title: '重叠分割',
+            message: '检测到重叠的分割，目前不支持此功能。',
             type: 'warning',
           });
         }

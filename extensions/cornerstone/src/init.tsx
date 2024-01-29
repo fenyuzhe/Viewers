@@ -111,9 +111,8 @@ export default async function init({
     !sharedArrayBufferDisabled
   ) {
     uiNotificationService.show({
-      title: 'Cross Origin Isolation',
-      message:
-        'Cross Origin Isolation is not enabled, read more about it here: https://docs.ohif.org/faq/',
+      title: '跨域',
+      message: '未启用跨域参数',
       type: 'warning',
     });
   }

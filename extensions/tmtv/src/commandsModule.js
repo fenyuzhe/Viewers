@@ -181,8 +181,8 @@ const commandsModule = ({ servicesManager, commandsManager, extensionManager }) 
 
       if (annotationUIDs.length === 0) {
         uiNotificationService.show({
-          title: 'Commands Module',
-          message: 'No ROIThreshold Tool is Selected',
+          title: '命令模块',
+          message: '未选择 ROIThreshold 工具',
           type: 'error',
         });
         return;

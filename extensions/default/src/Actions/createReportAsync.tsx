@@ -27,16 +27,16 @@ async function createReportAsync({ servicesManager, getReport, reportType = 'mea
     const displaySetInstanceUID = displaySet.displaySetInstanceUID;
 
     uiNotificationService.show({
-      title: 'Create Report',
-      message: `${reportType} saved successfully`,
+      title: '创建报告',
+      message: `${reportType} 保存成功`,
       type: 'success',
     });
 
     return [displaySetInstanceUID];
   } catch (error) {
     uiNotificationService.show({
-      title: 'Create Report',
-      message: error.message || `Failed to store ${reportType}`,
+      title: '创建报告',
+      message: error.message || `保存失败 ${reportType}`,
       type: 'error',
     });
   } finally {

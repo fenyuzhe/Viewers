@@ -271,8 +271,8 @@ const commandsModule = ({
         console.error(e);
         actions.toggleHpTools();
         uiNotificationService.show({
-          title: 'Apply Hanging Protocol',
-          message: 'The hanging protocol could not be applied.',
+          title: '挂片协议',
+          message: '无法应用挂片协议.',
           type: 'error',
           duration: 3000,
         });
@@ -331,8 +331,8 @@ const commandsModule = ({
         }
       }
       uiNotificationService.show({
-        title: 'Change Stage',
-        message: 'The hanging protocol has no more applicable stages',
+        title: '更改阶段',
+        message: '挂片协议没有更多适用的阶段',
         type: 'info',
         duration: 3000,
       });
@@ -616,9 +616,8 @@ const commandsModule = ({
       } catch (error) {
         console.warn(error);
         uiNotificationService.show({
-          title: 'Navigate Viewport Display Set',
-          message:
-            'The requested display sets could not be added to the viewport due to a mismatch in the Hanging Protocol rules.',
+          title: '导航窗口显示集',
+          message: '由于挂片协议规则不匹配，无法将请求的显示集添加到窗口.',
           type: 'info',
           duration: 3000,
         });

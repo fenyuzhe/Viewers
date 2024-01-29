@@ -71,8 +71,8 @@ function defaultRouteInit(
         // stores the series instance filter so it shows only once the warning
         issuedWarningSeries.push(seriesInstanceUIDs[0]);
         uiNotificationService.show({
-          title: 'Series filter',
-          message: `Each of the series in filter: ${seriesInstanceUIDs} are not part of the current study. The entire study is being displayed`,
+          title: '序列筛选',
+          message: `筛选器中的每个序列 ${seriesInstanceUIDs} 都不是当前检查的一部分. 整个检查都已显示`,
           type: 'error',
           duration: 7000,
         });

@@ -45,8 +45,8 @@ function PanelStudyBrowser({
     } catch (error) {
       console.warn(error);
       uiNotificationService.show({
-        title: 'Thumbnail Double Click',
-        message: 'The selected display sets could not be added to the viewport.',
+        title: '缩略图双击',
+        message: '所选的显示集无法添加到窗口.',
         type: 'info',
         duration: 3000,
       });

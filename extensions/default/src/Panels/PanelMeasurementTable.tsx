@@ -80,8 +80,8 @@ export default function PanelMeasurementTable({
 
     if (trackedMeasurements.length <= 0) {
       uiNotificationService.show({
-        title: 'No Measurements',
-        message: 'No Measurements are added to the current Study.',
+        title: '没有测量',
+        message: '当前检查中没有添加任何测量.',
         type: 'info',
         duration: 3000,
       });
@@ -212,7 +212,7 @@ export default function PanelMeasurementTable({
         data-cy={'measurements-panel'}
       >
         <MeasurementTable
-          title={t("Measurements")}
+          title={t('Measurements')}
           servicesManager={servicesManager}
           data={displayMeasurements}
           onClick={jumpToImage}

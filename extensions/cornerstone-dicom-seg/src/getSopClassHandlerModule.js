@@ -191,9 +191,8 @@ async function _loadSegments({ extensionManager, servicesManager, segDisplaySet,
 
   if (results.overlappingSegments) {
     uiNotificationService.show({
-      title: 'Overlapping Segments',
-      message:
-        'Unsupported overlapping segments detected, segmentation rendering results may be incorrect.',
+      title: '重叠分割',
+      message: '检测到不支持的重叠分割，分割渲染结果可能不正确.',
       type: 'warning',
     });
   }
@@ -201,9 +200,8 @@ async function _loadSegments({ extensionManager, servicesManager, segDisplaySet,
   if (!usedRecommendedDisplayCIELabValue) {
     // Display a notification about the non-utilization of RecommendedDisplayCIELabValue
     uiNotificationService.show({
-      title: 'DICOM SEG import',
-      message:
-        'RecommendedDisplayCIELabValue not found for one or more segments. The default color was used instead.',
+      title: 'DICOM SEG 导入',
+      message: '某个或多个分割中未找到RecommendedDisplayCIELabValue。默认颜色已被使用.',
       type: 'warning',
       duration: 5000,
     });

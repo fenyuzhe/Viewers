@@ -114,9 +114,8 @@ function _getDisplaySetsFromSeries(instances, servicesManager, extensionManager)
     ConceptNameCodeSequence.CodeValue !== CodeNameCodeSequenceValues.ImagingMeasurementReport
   ) {
     servicesManager.services.uiNotificationService.show({
-      title: 'DICOM SR',
-      message:
-        'OHIF only supports TID1500 Imaging Measurement Report Structured Reports. The SR you’re trying to view is not supported.',
+      title: 'DICOM 结构化报告',
+      message: '仅支持 TID1500 图像测量报告结构化报告。您正在尝试查看的结构化报告不受支持.',
       type: 'warning',
       duration: 6000,
     });
@@ -211,7 +210,7 @@ function _checkIfCanAddMeasurementsToDisplaySet(
     return;
   }
 
-  if (!newDisplaySet instanceof ImageSet) {
+  if ((!newDisplaySet) instanceof ImageSet) {
     // This also filters out _this_ displaySet, as it is not an ImageSet.
     return;
   }

@@ -81,8 +81,8 @@ const commandsModule = ({
 
       if (!displaySet.isReconstructable) {
         uiNotificationService.show({
-          title: 'Segmentation',
-          message: 'Segmentation is not supported for non-reconstructible displaysets yet',
+          title: '分割',
+          message: '目前尚不支持对非可重建的显示集进行分割',
           type: 'error',
         });
         return;

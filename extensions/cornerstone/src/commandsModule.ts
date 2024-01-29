@@ -297,9 +297,8 @@ function commandsModule({
 
         if (!activeViewportToolGroup._toolInstances.Crosshairs) {
           uiNotificationService.show({
-            title: 'Crosshairs',
-            message:
-              'You need to be in a MPR view to use Crosshairs. Click on MPR button in the toolbar to activate it.',
+            title: '十字线',
+            message: '您需要处于 MPR 视图才能使用十字线。点击工具栏中的 MPR 按钮以激活它。.',
             type: 'info',
             duration: 3000,
           });
@@ -322,8 +321,8 @@ function commandsModule({
 
       if (!toolGroup.getToolInstance(toolName)) {
         uiNotificationService.show({
-          title: `${toolName} tool`,
-          message: `The ${toolName} tool is not available in this viewport.`,
+          title: `${toolName} 工具`,
+          message: `${toolName} 工具在这个窗口中不可用.`,
           type: 'info',
           duration: 3000,
         });
@@ -365,8 +364,8 @@ function commandsModule({
       if (!cornerstoneViewportService.getCornerstoneViewport(activeViewportId)) {
         // Cannot download a non-cornerstone viewport (image).
         uiNotificationService.show({
-          title: 'Download Image',
-          message: 'Image cannot be downloaded',
+          title: '下载图像',
+          message: '无法下载图像',
           type: 'error',
         });
         return;

@@ -51,9 +51,8 @@ function PanelStudyBrowserTracking({
     } catch (error) {
       console.warn(error);
       uiNotificationService.show({
-        title: 'Thumbnail Double Click',
-        message:
-          'The selected display sets could not be added to the viewport due to a mismatch in the Hanging Protocol rules.',
+        title: '缩略图双击',
+        message: '由于挂片协议规则不匹配，无法将请求的显示集添加到窗口.',
         type: 'info',
         duration: 3000,
       });
@@ -483,15 +482,15 @@ function _mapDisplaySets(
                         displaySetService.deleteDisplaySet(displaySetInstanceUID);
                         uiDialogService.dismiss({ id: 'ds-reject-sr' });
                         uiNotificationService.show({
-                          title: 'Delete Report',
-                          message: 'Report deleted successfully',
+                          title: '删除报告',
+                          message: '报告删除成功',
                           type: 'success',
                         });
                       } catch (error) {
                         uiDialogService.dismiss({ id: 'ds-reject-sr' });
                         uiNotificationService.show({
-                          title: 'Delete Report',
-                          message: 'Failed to delete report',
+                          title: '删除报告',
+                          message: '报告删除失败',
                           type: 'error',
                         });
                       }

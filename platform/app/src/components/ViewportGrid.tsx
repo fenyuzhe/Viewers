@@ -106,9 +106,8 @@ function ViewerViewportGrid(props) {
       } catch (error) {
         console.warn(error);
         uiNotificationService.show({
-          title: 'Drag and Drop',
-          message:
-            'The selected display sets could not be added to the viewport due to a mismatch in the Hanging Protocol rules.',
+          title: '拖动缩略图',
+          message: '由于悬挂协议规则不匹配，所选的显示集无法添加到窗口.',
           type: 'info',
           duration: 3000,
         });
@@ -384,8 +383,8 @@ function _getViewportComponent(displaySets, viewportComponents, uiNotificationSe
 
   console.log("Can't show displaySet", SOPClassHandlerId, displaySets[0]);
   uiNotificationService.show({
-    title: 'Viewport Not Supported Yet',
-    message: `Cannot display SOPClassUID of ${displaySets[0].SOPClassUID} yet`,
+    title: '窗口不支持',
+    message: `SOPClassUID ${displaySets[0].SOPClassUID} 无法显示`,
     type: 'error',
   });
 
