@@ -331,9 +331,8 @@ function CPUModal() {
   return (
     <div>
       <p>
-        Your computer does not have enough GPU power to support the default GPU rendering mode. OHIF
-        has switched to CPU rendering mode. Please note that CPU rendering does not support all
-        features such as Volume Rendering, Multiplanar Reconstruction, and Segmentation Overlays.
+        您的计算机没有足够的 GPU 功率来支持默认的 GPU 渲染模式。程序 已切换到 CPU
+        渲染模式。请注意，CPU 渲染不支持所有功能，如体积渲染、多平面重建和分割覆盖。
       </p>
     </div>
   );
