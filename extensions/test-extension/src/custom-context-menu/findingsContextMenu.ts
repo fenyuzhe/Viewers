@@ -21,7 +21,7 @@ const findingsContextMenu = {
         },
         {
           // customizationType is implicit here in the configuration setup
-          label: 'Delete Measurement',
+          label: '删除测量',
           commands: [
             {
               commandName: 'deleteMeasurement',
@@ -29,7 +29,7 @@ const findingsContextMenu = {
           ],
         },
         {
-          label: 'Add Label',
+          label: '添加标注',
           commands: [
             {
               commandName: 'setMeasurementLabel',
