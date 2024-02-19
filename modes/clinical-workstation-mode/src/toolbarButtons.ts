@@ -329,7 +329,7 @@ const toolbarButtons: Button[] = [
         icon: 'chevron-down',
         label: '',
         isActive: true,
-        tooltip: '定位线和图像同步',
+        tooltip: '更多图像同步',
       },
       items: [
         ToolbarService._createToggleButton(
