@@ -515,7 +515,7 @@ const commandsModule = ({
           displaySetInstanceUID,
           onClose: UIModalService.hide,
         },
-        title: 'DICOM Tag Browser',
+        title: 'DICOM标签浏览器',
       });
     },
 

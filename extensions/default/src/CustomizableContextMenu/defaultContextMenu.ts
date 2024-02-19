@@ -8,7 +8,7 @@ const defaultContextMenu = {
       selector: ({ nearbyToolData }) => !!nearbyToolData,
       items: [
         {
-          label: 'Delete measurement',
+          label: '删除测量',
           commands: [
             {
               commandName: 'deleteMeasurement',
@@ -16,7 +16,7 @@ const defaultContextMenu = {
           ],
         },
         {
-          label: 'Add Label',
+          label: '添加标注',
           commands: [
             {
               commandName: 'setMeasurementLabel',
