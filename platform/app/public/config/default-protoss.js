@@ -185,8 +185,8 @@ window.config = {
       configuration: {
         friendlyName: 'WADORS Server',
         name: 'WADORS',
-        qidoRoot: 'http://192.168.1.170:8080/dicomweb',
-        wadoRoot: 'http://192.168.1.170:8080/dicomweb',
+        qidoRoot: 'http://192.168.20.104:8089/dicomweb',
+        wadoRoot: 'http://192.168.20.104:8089/dicomweb',
         qidoSupportsIncludeField: false,
         imageRendering: 'wadors',
         thumbnailRendering: 'wadors',
@@ -322,7 +322,8 @@ window.config = {
       keys: ['9'],
     },
   ],
-  patientListUrl: 'http://192.168.1.170:8080/patientlist',
-  pdfReportUrl: 'http://192.168.1.179:8080/ncpacsservice/reportPicServlet',
+  hospitalName: '和华医生集团(寿县)医院',
+  patientListUrl: 'http://192.168.20.104:8089/patientlist',
+  pdfReportUrl: 'http://192.168.20.104:8080/ncpacsservice/reportPicServlet',
   showPdfVierportBar: true,
 };

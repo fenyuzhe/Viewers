@@ -43,9 +43,10 @@ const Navigation = ({ activeTab, onTabChange }) => {
 const LeftPanel = React.memo<{ data: any }>(({ data }) => {
   // eslint-disable-next-line react/display-name
   const HospitalInfo = () => {
+    const [appConfig] = useAppConfig();
     return (
       <div className="bg-secondary-dark text-primary-light flex min-h-[92px] items-center justify-center font-serif text-2xl font-bold">
-        <span className="bg-blue-300 bg-clip-text text-transparent">阿克苏地区第一人民医院</span>
+        <span className="bg-blue-300 bg-clip-text text-transparent">{appConfig.hospitalName}</span>
       </div>
     );
   };
