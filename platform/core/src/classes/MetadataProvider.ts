@@ -181,30 +181,31 @@ class MetadataProvider {
           pixelAspectRatio: toNumber(instance.PixelAspectRatio),
           smallestPixelValue: toNumber(instance.SmallestPixelValue),
           largestPixelValue: toNumber(instance.LargestPixelValue),
-          redPaletteColorLookupTableDescriptor: toNumber(
-            instance.RedPaletteColorLookupTableDescriptor
-          ),
-          greenPaletteColorLookupTableDescriptor: toNumber(
-            instance.GreenPaletteColorLookupTableDescriptor
-          ),
-          bluePaletteColorLookupTableDescriptor: toNumber(
-            instance.BluePaletteColorLookupTableDescriptor
-          ),
-          redPaletteColorLookupTableData: fetchPaletteColorLookupTableData(
-            instance,
-            'RedPaletteColorLookupTableData',
-            'RedPaletteColorLookupTableDescriptor'
-          ),
-          greenPaletteColorLookupTableData: fetchPaletteColorLookupTableData(
-            instance,
-            'GreenPaletteColorLookupTableData',
-            'GreenPaletteColorLookupTableDescriptor'
-          ),
-          bluePaletteColorLookupTableData: fetchPaletteColorLookupTableData(
-            instance,
-            'BluePaletteColorLookupTableData',
-            'BluePaletteColorLookupTableDescriptor'
-          ),
+          //注释掉以下代码解决超声图片加载报错问题
+          // redPaletteColorLookupTableDescriptor: toNumber(
+          //   instance.RedPaletteColorLookupTableDescriptor
+          // ),
+          // greenPaletteColorLookupTableDescriptor: toNumber(
+          //   instance.GreenPaletteColorLookupTableDescriptor
+          // ),
+          // bluePaletteColorLookupTableDescriptor: toNumber(
+          //   instance.BluePaletteColorLookupTableDescriptor
+          // ),
+          // redPaletteColorLookupTableData: fetchPaletteColorLookupTableData(
+          //   instance,
+          //   'RedPaletteColorLookupTableData',
+          //   'RedPaletteColorLookupTableDescriptor'
+          // ),
+          // greenPaletteColorLookupTableData: fetchPaletteColorLookupTableData(
+          //   instance,
+          //   'GreenPaletteColorLookupTableData',
+          //   'GreenPaletteColorLookupTableDescriptor'
+          // ),
+          // bluePaletteColorLookupTableData: fetchPaletteColorLookupTableData(
+          //   instance,
+          //   'BluePaletteColorLookupTableData',
+          //   'BluePaletteColorLookupTableDescriptor'
+          // ),
         };
 
         break;
