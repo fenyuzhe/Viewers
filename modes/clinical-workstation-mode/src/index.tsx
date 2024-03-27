@@ -103,10 +103,10 @@ function modeFactory({ modeConfiguration }) {
         'Probe',
         'RotateTools',
         'cine',
-        'MPR',
+        // 'MPR',
         // 'ImageOverlayViewer',
         'TagBrowser',
-        'Capture',
+        // 'Capture',
         'Reset',
       ]);
       toolbarService.createButtonSection(MPR_TOOL_GROUP_ID, [
