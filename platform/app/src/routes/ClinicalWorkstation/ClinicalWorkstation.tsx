@@ -12,7 +12,7 @@ import { StrictMode } from 'react';
 // eslint-disable-next-line react/display-name
 const Navigation = ({ activeTab, onTabChange }) => {
   return (
-    <div className="p-1">
+    <div className="border-secondary-light border-l p-1">
       {/* 导航栏内容，包括Tab页按钮 */}
       <Button
         type={activeTab === 'reports' ? ButtonEnums.type.primary : ButtonEnums.type.secondary}
@@ -42,14 +42,15 @@ const Navigation = ({ activeTab, onTabChange }) => {
 // eslint-disable-next-line react/display-name
 const LeftPanel = React.memo<{ data: any }>(({ data }) => {
   // eslint-disable-next-line react/display-name
-  const HospitalInfo = () => {
-    const [appConfig] = useAppConfig();
-    return (
-      <div className="bg-secondary-dark text-primary-light flex min-h-[92px] items-center justify-center font-serif text-2xl font-bold">
-        <span className="bg-blue-300 bg-clip-text text-transparent">{appConfig.hospitalName}</span>
-      </div>
-    );
-  };
+  // const HospitalInfo = () => {
+  //   const [appConfig] = useAppConfig();
+  //   return (
+  //     // bg-secondary-dark
+  //     <div className=" text-primary-light border-secondary-light flex min-h-[92px] items-center justify-center border-b font-serif text-2xl font-bold">
+  //       <span className="bg-blue-300 bg-clip-text text-transparent">{appConfig.hospitalName}</span>
+  //     </div>
+  //   );
+  // };
   // 病人列表组件
   // eslint-disable-next-line react/display-name
   const PatientList = () => {
@@ -77,7 +78,7 @@ const LeftPanel = React.memo<{ data: any }>(({ data }) => {
             }}
             onClick={() => onPatientClick(patient)}
           >
-            <div>
+            <div style={{ wordWrap: 'break-word' }}>
               <p className="text-primary-light pl-3 text-lg">类型：{patient.modality}</p>
               <p className="text-primary-light pl-3 text-lg">姓名：{patient.patientName}</p>
               <p className="text-primary-light pl-3 text-lg">部位：{patient.bodypartName}</p>
@@ -100,7 +101,8 @@ const LeftPanel = React.memo<{ data: any }>(({ data }) => {
       setSelectedPatientState(patient);
     };
     return (
-      <div className="bg-primary-dark ohif-scrollbar flex flex-1 flex-col overflow-y-hidden">
+      // bg-primary-dark
+      <div className="ohif-scrollbar flex flex-1 flex-col overflow-y-hidden">
         {data.map(patient => (
           <PatientInfo
             key={patient.registerKey}
@@ -112,8 +114,8 @@ const LeftPanel = React.memo<{ data: any }>(({ data }) => {
     );
   };
   return (
-    <div className="min-w-6 flex flex-col">
-      <HospitalInfo />
+    <div className="flex w-72 flex-col">
+      {/* <HospitalInfo /> */}
       <PatientList />
     </div>
   );
@@ -170,6 +172,8 @@ const TabContent = ({ activeTab, appconfig }) => {
         <div className="h-full">
           {selectedPatient === null || selectedPatient === undefined ? (
             <p></p>
+          ) : selectedPatient.imageNum === null || selectedPatient.imageNum === '0' ? (
+            <p className="text-white">当前检查无图像</p>
           ) : (
             <iframe
               key="clinicalviewer"
@@ -216,7 +220,8 @@ function ClinicalWorkstation() {
       <div className="flex h-screen bg-black ">
         {/* 左侧病人列表 */}
         <LeftPanel data={leftPanelData} />
-        <div className="ml-1 flex flex-1 flex-col">
+        {/* ml-1  */}
+        <div className="flex flex-1 flex-col">
           {/* 右侧上部导航栏 */}
           <Navigation
             activeTab={activeTab}
