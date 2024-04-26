@@ -39,8 +39,7 @@ const Thumbnail = ({
     <div
       className={classnames(
         className,
-        // 'group mb-8 flex flex-1 cursor-pointer select-none flex-col px-3 outline-none'
-        'group mb-1 flex flex-1 cursor-pointer select-none flex-col px-3 outline-none'
+        'group mb-1 flex flex-1 cursor-pointer select-none flex-col px-10 outline-none'
       )}
       id={`thumbnail-${displaySetInstanceUID}`}
       data-cy={`study-browser-thumbnail`}
@@ -62,12 +61,6 @@ const Thumbnail = ({
           }}
         >
           {imageSrc ? (
-            // <img
-            //   src={imageSrc}
-            //   alt={imageAltText}
-            //   className="min-h-32 object-none"
-            //   crossOrigin="anonymous"
-            // />
             <div style={{ position: 'relative' }}>
               <img
                 src={imageSrc}
@@ -97,25 +90,12 @@ const Thumbnail = ({
             <div>{imageAltText}</div>
           )}
         </div>
-        {/* <div className="flex flex-1 flex-row items-center pt-2 text-base text-blue-300"> */}
-        <div className="flex flex-1 flex-row items-center pt-1 text-base text-blue-300">
-          {/* <div className="mr-4">
-            <span className="text-primary-main font-bold">{'S: '}</span>
-            {seriesNumber}
-          </div>
-          <div className="flex flex-1 flex-row items-center">
-            <Icon
-              name={countIcon || 'group-layers'}
-              className="mr-2 w-3"
-            />
-            {` ${numInstances}`}
-          </div> */}
-          {/* <DisplaySetMessageListTooltip
+        {/* <div className="flex flex-1 flex-row items-center pt-1 text-base text-blue-300">
+          <DisplaySetMessageListTooltip
             messages={messages}
             id={`display-set-tooltip-${displaySetInstanceUID}`}
-          /> */}
-        </div>
-        {/* <div className="break-all text-base text-white">{description}</div> */}
+          />
+        </div> */}
         <div className="flex flex-1 flex-row items-center">
           <div className="mx-auto text-base text-white">{description}</div>
         </div>
