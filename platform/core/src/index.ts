@@ -9,6 +9,7 @@ import object from './object.js';
 import string from './string.js';
 import user from './user.js';
 import utils from './utils';
+import caches from './plugins';
 import defaults from './defaults';
 import * as Types from './types';
 import * as Enums from './enums';
@@ -53,6 +54,7 @@ const OHIF = {
   //
   defaults,
   utils,
+  caches,
   hotkeys,
   classes,
   string,
@@ -93,6 +95,7 @@ export {
   //
   defaults,
   utils,
+  caches,
   hotkeys,
   classes,
   string,
