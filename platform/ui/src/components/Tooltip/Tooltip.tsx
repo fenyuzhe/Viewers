@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import './tooltip.css';
+import styles from 'extensions/dicom-microscopy/src/utils/styles';
 
 const arrowPositionStyle = {
   bottom: {
@@ -30,7 +31,16 @@ const arrowPositionStyle = {
   },
 };
 
-const Tooltip = ({ content, isSticky, position, className, tight, children, isDisabled }) => {
+const Tooltip = ({
+  content,
+  isSticky,
+  position,
+  styles,
+  className,
+  tight,
+  children,
+  isDisabled,
+}) => {
   const [isActive, setIsActive] = useState(false);
   const { t } = useTranslation('Buttons');
 
@@ -63,6 +73,7 @@ const Tooltip = ({ content, isSticky, position, className, tight, children, isDi
           block: isOpen,
           hidden: !isOpen,
         })}
+        style={styles}
       >
         <div
           className={classnames(
@@ -103,6 +114,7 @@ Tooltip.propTypes = {
   content: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   position: PropTypes.oneOf(['bottom', 'bottom-left', 'bottom-right', 'left', 'right', 'top']),
   isSticky: PropTypes.bool,
+  styles: PropTypes.object,
   tight: PropTypes.bool,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,

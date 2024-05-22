@@ -1,5 +1,8 @@
-.tooltip {
+/* .tooltip {
   @apply absolute z-10;
+} */
+.tooltip {
+  @apply fixed z-10;
 }
 
 /* TOOLTIP WORKAROUND FOR ARROW UP */
@@ -24,8 +27,8 @@
 }
 
 .tooltip.tooltip-bottom {
-  @apply mt-1 pt-2;
-  left: 50%;
+  @apply mt-1 pt-2 ml-4;
+  /* left: 50%; */
   transform: translateX(-50%);
 }
 
