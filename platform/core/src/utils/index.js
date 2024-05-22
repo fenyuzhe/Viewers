@@ -28,6 +28,7 @@ import roundNumber from './roundNumber';
 import downloadCSVReport from './downloadCSVReport';
 import isEqualWithin from './isEqualWithin';
 import addAccessors from './addAccessors';
+import service from './request';
 import {
   sortStudy,
   sortStudySeries,
@@ -37,6 +38,7 @@ import {
 } from './sortStudy';
 import { subscribeToNextViewportGridChange } from './subscribeToNextViewportGridChange';
 import { splitComma, getSplitParam } from './splitComma';
+import { getToken, setToken, removeToken } from './auth';
 
 // Commented out unused functionality.
 // Need to implement new mechanism for derived displaySets using the displaySetManager.
@@ -80,6 +82,10 @@ const utils = {
   splitComma,
   getSplitParam,
   generateAcceptHeader,
+  service,
+  getToken,
+  setToken,
+  removeToken,
 };
 
 export {
@@ -91,6 +97,7 @@ export {
   writeScript,
   b64toBlob,
   urlUtil,
+  service,
   //loadAndCacheDerivedDisplaySets,
   makeDeferred,
   makeCancelable,
