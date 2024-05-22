@@ -79,6 +79,8 @@ import PanelSection from './PanelSection';
 import AdvancedToolbox from './AdvancedToolbox';
 import InputDoubleRange from './InputDoubleRange';
 import LegacyButtonGroup from './LegacyButtonGroup';
+import { Tabs, Tab } from './Tabs';
+import LayOut from './Layout';
 
 export {
   AboutModal,
@@ -163,4 +165,7 @@ export {
   ViewportPane,
   ViewportOverlay,
   WindowLevelMenuItem,
+  Tabs,
+  Tab,
+  LayOut,
 };

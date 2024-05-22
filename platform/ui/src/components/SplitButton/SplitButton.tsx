@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import OutsideClickHandler from 'react-outside-click-handler';
@@ -13,12 +13,14 @@ const baseClasses = {
   Primary:
     // By default border on left, top and bottom for hover effect and only rounded on left side.
     // Extra padding on right to compensate for no right border.
-    'h-full border-l-2 border-t-2 border-b-2 rounded-tl-md rounded-bl-md group/primary !pl-2 !py-2',
+    // 'h-full border-l-2 border-t-2 border-b-2 rounded-tl-md rounded-bl-md group/primary !pl-2 !py-2',
+    'h-full rounded-tl-md rounded-bl-md group/primary !pl-2 !py-2',
   Secondary:
     'h-full flex items-center justify-center rounded-tr-md rounded-br-md w-4 border-2 border-transparent group/secondary',
   SecondaryIcon: 'w-4 h-full stroke-1',
   Separator: 'border-l py-2.5',
-  Content: 'absolute z-10 top-0 mt-12',
+  // Content: 'absolute z-10 top-0 mt-12',
+  Content: 'fixed z-10 top-0 mt-12',
 };
 
 const classes = {
@@ -30,37 +32,37 @@ const classes = {
   Interface: 'h-full flex flex-row items-center',
   Primary: ({ primary, isExpanded }) =>
     classNames(
-      baseClasses.Primary,
-      primary.isActive
-        ? isExpanded
-          ? 'border-primary-dark !bg-primary-dark hover:border-primary-dark !text-primary-light'
-          : `${
-              primary.isToggle
-                ? 'border-secondary-dark bg-secondary-light'
-                : 'border-primary-light bg-primary-light'
-            }
-            border-2 rounded-md !p-2` // Full, rounded border with less right padding when active.
-        : `focus:!text-black focus:!rounded-md focus:!border-primary-light focus:!bg-primary-light
-        ${
-          isExpanded
-            ? 'border-primary-dark bg-primary-dark !text-primary-light'
-            : 'border-secondary-dark bg-secondary-dark group-hover/button:border-primary-dark group-hover/button:text-primary-light hover:!bg-primary-dark hover:border-primary-dark focus:!text-black'
-        }
-        `
+      baseClasses.Primary
+      // primary.isActive
+      //   ? isExpanded
+      //     ? 'border-primary-dark !bg-primary-dark hover:border-primary-dark !text-primary-light'
+      //     : `${
+      //         primary.isToggle
+      //           ? 'border-secondary-dark bg-secondary-light'
+      //           : 'border-primary-light bg-primary-light'
+      //       }
+      //       border-2 rounded-md !p-2` // Full, rounded border with less right padding when active.
+      //   : `focus:!text-black focus:!rounded-md focus:!border-primary-light focus:!bg-primary-light
+      //   ${
+      //     isExpanded
+      //       ? 'border-primary-dark bg-primary-dark !text-primary-light'
+      //       : 'border-secondary-dark bg-secondary-dark group-hover/button:border-primary-dark group-hover/button:text-primary-light hover:!bg-primary-dark hover:border-primary-dark focus:!text-black'
+      //   }
+      //   `
     ),
   Secondary: ({ isExpanded, primary }) =>
     classNames(
-      baseClasses.Secondary,
-      isExpanded
-        ? 'bg-primary-light !rounded-tr-md !rounded-br-md'
-        : primary.isActive
-        ? 'bg-secondary-dark'
-        : 'hover:bg-primary-dark bg-secondary-dark group-hover/button:border-primary-dark'
+      baseClasses.Secondary
+      // isExpanded
+      //   ? 'bg-primary-light !rounded-tr-md !rounded-br-md'
+      //   : primary.isActive
+      //     ? 'bg-secondary-dark'
+      //     : 'hover:bg-primary-dark bg-secondary-dark group-hover/button:border-primary-dark'
     ),
   SecondaryIcon: ({ isExpanded }) =>
     classNames(
       baseClasses.SecondaryIcon,
-      isExpanded ? 'text-primary-dark' : 'text-[#348cfd] group-hover/secondary:text-primary-light'
+      isExpanded ? 'text-white' : 'text-[#ffffff] group-hover/secondary:text-white'
     ),
   Separator: ({ primary, isExpanded, isHovering }) =>
     classNames(
@@ -83,10 +85,33 @@ const SplitButton = ({
 }) => {
   const { t } = useTranslation('Buttons');
   const [state, setState] = useState({ isHovering: false, isExpanded: false });
-
-  const toggleExpanded = () => setState({ ...state, isExpanded: !state.isExpanded });
+  // const toggleExpanded = () => setState({ ...state, isExpanded: !state.isExpanded });
   const setHover = hovering => setState({ ...state, isHovering: hovering });
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
   const collapse = () => setState({ ...state, isExpanded: false });
+  const parentRef = useRef(null);
+  const parentRef2 = useRef(null);
+
+  const toggleExpanded = () => {
+    const rect = parentRef.current.getBoundingClientRect();
+    setDropdownPosition({ top: rect.top, left: rect.left });
+    setState({ ...state, isExpanded: !state.isExpanded });
+  };
+
+  const [tootipPosition, setTootipPosition] = useState({ top: 0, left: 0 });
+  const [sticky, setSticky] = useState(false);
+
+  const handleMouseOver = () => {
+    const rect = parentRef2.current.getBoundingClientRect();
+    setTootipPosition({ top: rect.top + rect.height, left: rect.left });
+    setSticky(true);
+  };
+
+  const handleMouseOut = () => {
+    setSticky(false);
+  };
+
+  const styleo = { top: `${tootipPosition.top}` + 'px', left: `${tootipPosition.left}` + 'px' };
 
   const renderPrimaryButton = () => (
     <Component
@@ -116,18 +141,26 @@ const SplitButton = ({
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
         >
-          <div className={classes.Interface}>
+          <div
+            className={classes.Interface}
+            ref={parentRef}
+          >
             <div onClick={collapse}>{renderPrimaryButton()}</div>
             <div className={classes.Separator({ ...state, primary: { isActive } })}></div>
             <div
               className={classes.Secondary({ ...state, primary: { isActive } })}
               onClick={toggleExpanded}
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleMouseOut}
               data-cy={`${groupId}-split-button-secondary`}
+              ref={parentRef2}
             >
               <Tooltip
                 isDisabled={state.isExpanded || !secondary.tooltip}
                 content={secondary.tooltip}
                 className="h-full"
+                styles={styleo}
+                isSticky={sticky}
               >
                 <Icon
                   name={secondary.icon}
@@ -140,6 +173,7 @@ const SplitButton = ({
         <div
           className={classes.Content({ ...state })}
           data-cy={`${groupId}-list-menu`}
+          style={{ top: dropdownPosition.top, left: dropdownPosition.left }}
         >
           <ListMenu
             items={items}

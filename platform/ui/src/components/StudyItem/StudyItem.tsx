@@ -24,10 +24,7 @@ const StudyItem = ({
   const { t } = useTranslation('StudyItem');
   return (
     <div
-      className={classnames(
-        isActive ? 'bg-primary-dark' : 'hover:bg-secondary-main bg-[#646464]',
-        baseClasses
-      )}
+      className={classnames(isActive ? 'bg-[#5f4141]' : 'bg-[#6d5555]', baseClasses)}
       onClick={onClick}
       onKeyDown={onClick}
       role="button"
