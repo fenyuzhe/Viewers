@@ -37,10 +37,7 @@ const Thumbnail = ({
 
   return (
     <div
-      className={classnames(
-        className,
-        'group mb-1 flex flex-1 cursor-pointer select-none flex-col px-10 outline-none'
-      )}
+      className={classnames(className, 'group flex flex-1 flex-col ')}
       id={`thumbnail-${displaySetInstanceUID}`}
       data-cy={`study-browser-thumbnail`}
       onClick={onClick}
@@ -48,56 +45,55 @@ const Thumbnail = ({
       role="button"
       tabIndex="0"
     >
-      <div ref={drag}>
+      <div>
         <div
           className={classnames(
-            'min-h-32 flex flex-1 items-center justify-center overflow-hidden rounded-md bg-black text-base text-white',
+            'min-h-40 flex flex-1 items-center justify-center overflow-hidden text-base text-white',
             isActive
-              ? 'border-primary-light border-2'
-              : 'border-secondary-light border hover:border-blue-300'
+              ? 'border-primary-light border bg-[#c5c5c5]'
+              : 'border-secondary-light border bg-[#7f7f7f] hover:border-blue-300'
           )}
-          style={{
-            margin: isActive ? '0' : '1px',
-          }}
         >
           {imageSrc ? (
-            <div style={{ position: 'relative' }}>
-              <img
-                src={imageSrc}
-                alt={imageAltText}
-                className="min-h-32 object-none"
-                crossOrigin="anonymous"
-              />
+            <div className="flex flex-col">
               <div
-                className="absolute bottom-0 left-0 ml-2"
-                style={{ color: '#fff' }}
+                className={classnames('mx-auto text-base', isActive ? 'text-black' : 'text-white')}
               >
-                <span className=" text-primary-light font-bold">{'S: '}</span>
-                {seriesNumber}
+                {description}
               </div>
               <div
-                className="absolute bottom-0 right-0 mr-2 flex flex-row items-center"
-                style={{ color: '#fff' }}
+                ref={drag}
+                style={{ position: 'relative' }}
+                className="mx-auto h-32 w-32 cursor-pointer select-none outline-none"
               >
-                <Icon
-                  name={countIcon || 'group-layers'}
-                  className="mr-1 w-3"
+                <img
+                  src={imageSrc}
+                  alt={imageAltText}
+                  className="min-h-32 px-auto object-none"
+                  crossOrigin="anonymous"
                 />
-                {` ${numInstances}`}
+                <div
+                  className="absolute bottom-0 left-0 ml-2"
+                  style={{ color: '#fff' }}
+                >
+                  <span className=" text-primary-light font-bold">{'S: '}</span>
+                  {seriesNumber}
+                </div>
+                <div
+                  className="absolute bottom-0 right-0 mr-2 flex flex-row items-center"
+                  style={{ color: '#fff' }}
+                >
+                  <Icon
+                    name={countIcon || 'group-layers'}
+                    className="mr-1 w-3"
+                  />
+                  {` ${numInstances}`}
+                </div>
               </div>
             </div>
           ) : (
             <div>{imageAltText}</div>
           )}
-        </div>
-        {/* <div className="flex flex-1 flex-row items-center pt-1 text-base text-blue-300">
-          <DisplaySetMessageListTooltip
-            messages={messages}
-            id={`display-set-tooltip-${displaySetInstanceUID}`}
-          />
-        </div> */}
-        <div className="flex flex-1 flex-row items-center">
-          <div className="mx-auto text-base text-white">{description}</div>
         </div>
       </div>
     </div>
