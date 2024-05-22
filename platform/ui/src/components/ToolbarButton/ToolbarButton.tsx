@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
 import IconButton from '../IconButton';
 import Icon from '../Icon';
 import Tooltip from '../Tooltip';
@@ -21,31 +20,50 @@ const ToolbarButton = ({
   //
 }) => {
   const classes = {
-    tool: isActive
-      ? 'text-black'
-      : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
-    toggle: isActive
-      ? '!text-[#348CFD]'
-      : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
-    action: isActive
-      ? 'text-black'
-      : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
+    // tool: isActive
+    //   ? 'text-black'
+    //   : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
+    // toggle: isActive
+    //   ? '!text-[#348CFD]'
+    //   : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
+    // action: isActive
+    //   ? 'text-black'
+    //   : 'text-common-bright hover:!bg-primary-dark hover:text-primary-light',
   };
 
   const bgClasses = {
     toggle: isActive && 'bg-transparent',
   };
-
+  const parentRef = useRef(null);
   const activeClass = isActive ? 'active' : '';
   const shouldShowDropdown = !!isActive && !!dropdownContent;
   const iconEl = icon ? <Icon name={icon} /> : <div>{label || 'Missing icon and label'}</div>;
+  const [tootipPosition, setTootipPosition] = useState({ top: 0, left: 0 });
+  const [sticky, setSticky] = useState(false);
+  const styleo = { top: `${tootipPosition.top}` + 'px', left: `${tootipPosition.left}` + 'px' };
+  const handleMouseOver = () => {
+    const rect = parentRef.current.getBoundingClientRect();
+    setTootipPosition({ top: rect.top + rect.height, left: rect.left });
+    setSticky(true);
+  };
+
+  const handleMouseOut = () => {
+    setSticky(false);
+  };
 
   return (
-    <div key={id}>
+    <div
+      ref={parentRef}
+      key={id}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
+    >
       <Tooltip
-        isSticky={shouldShowDropdown}
+        // isSticky={shouldShowDropdown}
         content={shouldShowDropdown ? dropdownContent : label}
         tight={shouldShowDropdown}
+        styles={styleo}
+        isSticky={sticky}
       >
         <IconButton
           variant={isActive ? 'contained' : 'text'}
