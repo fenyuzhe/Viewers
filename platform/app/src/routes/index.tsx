@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Children } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ErrorBoundary } from '@ohif/ui';
+import { ErrorBoundary, Login, LayOut, StudyList } from '@ohif/ui';
 
 // Route Components
 import DataSourceWrapper from './DataSourceWrapper';
@@ -102,18 +102,27 @@ const createRoutes = ({
 
   const { customizationService } = servicesManager.services;
 
-  const WorkListRoute = {
+  // const WorkListRoute = {
+  //   path: '/',
+  //   children: DataSourceWrapper,
+  //   private: true,
+  //   props: { children: WorkList, servicesManager, extensionManager },
+  // };
+  const LayOutRoute = {
     path: '/',
-    children: DataSourceWrapper,
+    children: LayOut,
     private: true,
-    props: { children: WorkList, servicesManager, extensionManager },
+  };
+  const LoginRoute = {
+    path: '/login',
+    children: Login,
   };
 
   //创建ClinicalWorkstation路由
   const ClinicalWorkstationRoute = {
     path: '/ClinicalWorkList',
     children: ClinicalWorkstation,
-    private: true,
+    // private: true,
     // props: { children: WorkList, servicesManager, extensionManager },
   };
 
@@ -124,6 +133,8 @@ const createRoutes = ({
     ...(showStudyList ? [ClinicalWorkstationRoute] : []),
     ...(customRoutes?.routes || []),
     ...bakedInRoutes,
+    ...[LoginRoute],
+    ...[LayOutRoute],
     customRoutes?.notFoundRoute || notFoundRoute,
   ];
 
@@ -132,7 +143,7 @@ const createRoutes = ({
     return (
       <ErrorBoundary
         context={`Route ${route.path}`}
-        fallbackRoute="/"
+        fallbackRoute="/login"
       >
         <route.children
           {...rest}
@@ -153,17 +164,29 @@ const createRoutes = ({
   return (
     <Routes>
       {allRoutes.map((route, i) => {
+        <Route
+          path="/login"
+          element={<Login />}
+        />;
         return route.private === true ? (
           <Route
             key={i}
             exact
             path={route.path}
             element={
-              <PrivateRoute handleUnauthenticated={userAuthenticationService.handleUnauthenticated}>
+              // <PrivateRoute handleUnauthenticated={userAuthenticationService.handleUnauthenticated}>
+              //   <RouteWithErrorBoundary route={route} />
+              // </PrivateRoute>
+              <PrivateRoute>
                 <RouteWithErrorBoundary route={route} />
               </PrivateRoute>
             }
-          ></Route>
+          >
+            <Route
+              index
+              element={<StudyList />}
+            />
+          </Route>
         ) : (
           <Route
             key={i}

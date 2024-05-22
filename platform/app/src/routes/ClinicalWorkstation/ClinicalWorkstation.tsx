@@ -1,39 +1,74 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, ButtonEnums, Icon } from '@ohif/ui';
+import { Icon, Tabs, Tab } from '@ohif/ui';
 import { SelectedPatientProvider, useSelectedPatient } from '@ohif/ui';
 import classnames from 'classnames';
 import { useSearchParams } from '@hooks';
 import { utils } from '@ohif/core';
 import { useAppConfig } from '@state';
-import { StrictMode } from 'react';
 //顶部导航组件
 // eslint-disable-next-line react/display-name
 const Navigation = ({ activeTab, onTabChange }) => {
+  const [appConfig] = useAppConfig();
+  const { selectedPatient } = useSelectedPatient();
+  // 使用 useMemo 缓存 iframe 的 src
+  const pdfUrl = selectedPatient
+    ? appConfig.pdfReportUrl +
+      '?reg_key=' +
+      selectedPatient.registerKey +
+      '&output=pdfbyte' +
+      '#view=Fit,top' +
+      (!appConfig.showPdfVierportBar ? '#toolbar=0' : '')
+    : '';
+  const imageUrl = selectedPatient
+    ? `/clinicalviewer?StudyInstanceUIDs=` + selectedPatient.studyInstanceUid
+    : '';
   return (
-    <div className="border-secondary-light border-l p-1">
+    <div className="h-full bg-[#323232] p-1">
       {/* 导航栏内容，包括Tab页按钮 */}
-      <Button
-        type={activeTab === 'reports' ? ButtonEnums.type.primary : ButtonEnums.type.secondary}
-        size={ButtonEnums.size.medium}
-        startIcon={<Icon name="reports" />}
-        className={classnames('mr-4')}
-        disabled={false}
-        onClick={() => onTabChange('reports')}
-      >
-        检查报告
-      </Button>
-      <Button
-        type={activeTab === 'images' ? ButtonEnums.type.primary : ButtonEnums.type.secondary}
-        size={ButtonEnums.size.medium}
-        startIcon={<Icon name="images" />}
-        className={classnames('mr-4')}
-        disabled={false}
-        onClick={() => onTabChange('images')}
-      >
-        检查影像
-      </Button>
+      <Tabs defaultActiveTab="检查影像">
+        <Tab
+          label="检查报告"
+          icon={<Icon name="reports" />}
+        >
+          <div className="min-w-80 min-h-80 h-full">
+            {selectedPatient === null || selectedPatient === undefined ? (
+              <p></p>
+            ) : (
+              <div className="h-full w-full">
+                <iframe
+                  key="pdfreportviewer"
+                  title="pdfreportviewer"
+                  src={pdfUrl}
+                  width="100%"
+                  height="100%"
+                ></iframe>
+              </div>
+            )}
+          </div>
+        </Tab>
+        <Tab
+          label="检查影像"
+          icon={<Icon name="images" />}
+        >
+          <div className="min-w-80 min-h-80 h-full">
+            {selectedPatient === null || selectedPatient === undefined ? (
+              <p></p>
+            ) : selectedPatient.imageNum === null || selectedPatient.imageNum === '0' ? (
+              <p className="text-white">当前检查无图像</p>
+            ) : (
+              <iframe
+                key="clinicalviewer"
+                title="clinicalviewer"
+                src={imageUrl}
+                width="100%"
+                height="100%"
+              />
+            )}
+          </div>
+        </Tab>
+      </Tabs>
     </div>
   );
 };
@@ -41,37 +76,21 @@ const Navigation = ({ activeTab, onTabChange }) => {
 // 病人列表组件
 // eslint-disable-next-line react/display-name
 const LeftPanel = React.memo<{ data: any }>(({ data }) => {
-  // eslint-disable-next-line react/display-name
-  // const HospitalInfo = () => {
-  //   const [appConfig] = useAppConfig();
-  //   return (
-  //     // bg-secondary-dark
-  //     <div className=" text-primary-light border-secondary-light flex min-h-[92px] items-center justify-center border-b font-serif text-2xl font-bold">
-  //       <span className="bg-blue-300 bg-clip-text text-transparent">{appConfig.hospitalName}</span>
-  //     </div>
-  //   );
-  // };
-  // 病人列表组件
-  // eslint-disable-next-line react/display-name
   const PatientList = () => {
     // eslint-disable-next-line react/display-name
     const PatientInfo = React.memo<{
       patient: any;
       onPatientClick: (patient: any) => void;
-      // eslint-disable-next-line react/prop-types
     }>(({ patient, onPatientClick }) => {
       const isActive =
-        // eslint-disable-next-line react/prop-types
         selectedPatientState && selectedPatientState.registerKey === patient.registerKey;
       const { formatDate } = utils;
       return (
-        <div className="mt-1 text-white">
+        <div className="mt-1">
           <div
             className={classnames(
-              'min-h-32 m-1 flex flex-1 cursor-pointer items-center overflow-hidden rounded-md bg-black text-base text-white',
-              isActive
-                ? 'border-primary-light border-2'
-                : 'border-secondary-light border hover:border-blue-300'
+              'min-h-32 m-1 flex flex-1 cursor-pointer items-center overflow-hidden rounded-md  text-base',
+              isActive ? 'bg-[#c5c5c5] text-black' : 'bg-[#7f7f7f] text-white'
             )}
             style={{
               margin: isActive ? '0' : '1px',
@@ -79,10 +98,10 @@ const LeftPanel = React.memo<{ data: any }>(({ data }) => {
             onClick={() => onPatientClick(patient)}
           >
             <div style={{ wordWrap: 'break-word' }}>
-              <p className="text-primary-light pl-3 text-lg">类型：{patient.modality}</p>
-              <p className="text-primary-light pl-3 text-lg">姓名：{patient.patientName}</p>
-              <p className="text-primary-light pl-3 text-lg">部位：{patient.bodypartName}</p>
-              <p className="text-primary-light pl-3 text-lg">
+              <p className="pl-3 text-lg">类型：{patient.modality}</p>
+              <p className="pl-3 text-lg">姓名：{patient.patientName}</p>
+              <p className="pl-3 text-lg">部位：{patient.bodypartName}</p>
+              <p className="pl-3 text-lg">
                 时间：{formatDate(patient.studyTime, 'YYYY-MM-DD HH:mm:ss')}
               </p>
             </div>
@@ -102,7 +121,7 @@ const LeftPanel = React.memo<{ data: any }>(({ data }) => {
     };
     return (
       // bg-primary-dark
-      <div className="ohif-scrollbar flex flex-1 flex-col overflow-y-hidden">
+      <div className="ohif-scrollbar flex flex-1 flex-col overflow-y-hidden rounded-md bg-[#646464]">
         {data.map(patient => (
           <PatientInfo
             key={patient.registerKey}
@@ -115,79 +134,10 @@ const LeftPanel = React.memo<{ data: any }>(({ data }) => {
   };
   return (
     <div className="flex w-72 flex-col">
-      {/* <HospitalInfo /> */}
       <PatientList />
     </div>
   );
 });
-
-// 检查报告组件
-// eslint-disable-next-line react/display-name
-const TabContent = ({ activeTab, appconfig }) => {
-  const { selectedPatient } = useSelectedPatient();
-  const [appConfig] = useAppConfig();
-  const PdfViewer = ({ pdfUrl }) => {
-    return (
-      <div className="h-full w-full">
-        <iframe
-          style={{ backgroundColor: 'gray' }}
-          key="pdfreportviewer"
-          title="pdfreportviewer"
-          src={pdfUrl}
-          width="100%"
-          height="100%"
-        ></iframe>
-      </div>
-    );
-  };
-  // 使用 useMemo 缓存 iframe 的 src
-  const iframeSrc = useMemo(() => {
-    if (activeTab === 'reports' && selectedPatient) {
-      // #toolbar=0 隐藏工具栏
-      return (
-        appConfig.pdfReportUrl +
-        '?reg_key=' +
-        selectedPatient.registerKey +
-        '&output=pdfbyte' +
-        (!appconfig.showPdfVierportBar ? '#toolbar=0' : '')
-      );
-    } else if (activeTab === 'images' && selectedPatient) {
-      return `/clinicalviewer?StudyInstanceUIDs=` + selectedPatient.studyInstanceUid;
-    }
-    return '';
-  }, [activeTab, selectedPatient]);
-  return (
-    <div className="border-secondary-light mb-1 mr-1 flex-1 border p-1">
-      {/* 根据activeTab显示不同的内容 */}
-      {activeTab === 'reports' && (
-        <div className="h-full">
-          {selectedPatient === null || selectedPatient === undefined ? (
-            <p></p>
-          ) : (
-            <PdfViewer pdfUrl={iframeSrc} />
-          )}
-        </div>
-      )}
-      {activeTab === 'images' && (
-        <div className="h-full">
-          {selectedPatient === null || selectedPatient === undefined ? (
-            <p></p>
-          ) : selectedPatient.imageNum === null || selectedPatient.imageNum === '0' ? (
-            <p className="text-white">当前检查无图像</p>
-          ) : (
-            <iframe
-              key="clinicalviewer"
-              title="clinicalviewer"
-              src={iframeSrc}
-              width="100%"
-              height="100%"
-            />
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
 
 function ClinicalWorkstation() {
   const [activeTab, setActiveTab] = useState('images');
@@ -228,12 +178,12 @@ function ClinicalWorkstation() {
             onTabChange={handleTabChange}
           />
           {/* 右侧下部Tab页内容 */}
-          <StrictMode>
+          {/* <StrictMode>
             <TabContent
               activeTab={activeTab}
               appconfig={appConfig}
             />
-          </StrictMode>
+          </StrictMode> */}
         </div>
       </div>
     </SelectedPatientProvider>

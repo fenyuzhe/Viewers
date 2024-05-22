@@ -59,7 +59,7 @@ export default function buildModeRoutes({
       routes.push({
         path,
         children,
-        private: true,
+        // private: true, //去掉私有，避免重定向到login
       });
     });
 
@@ -81,7 +81,7 @@ export default function buildModeRoutes({
     routes.push({
       path,
       children,
-      private: true, // todo: all mode routes are private for now
+      // private: true, // todo: all mode routes are private for now //去掉私有，避免重定向到login
     });
   });
 

@@ -1,14 +1,24 @@
+// import React from 'react';
+// import { useUserAuthentication } from '@ohif/ui';
+
+// export const PrivateRoute = ({ children, handleUnauthenticated }) => {
+//   const [{ user, enabled }] = useUserAuthentication();
+
+//   if (enabled && !user) {
+//     return handleUnauthenticated();
+//   }
+
+//   return children;
+// };
+
+// export default PrivateRoute;
 import React from 'react';
-import { useUserAuthentication } from '@ohif/ui';
+import { Navigate } from 'react-router-dom';
 
-export const PrivateRoute = ({ children, handleUnauthenticated }) => {
-  const [{ user, enabled }] = useUserAuthentication();
+const PrivateRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+  const isAuthenticated = sessionStorage.getItem('auth') === 'true';
 
-  if (enabled && !user) {
-    return handleUnauthenticated();
-  }
-
-  return children;
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;
