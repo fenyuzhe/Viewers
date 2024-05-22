@@ -40,10 +40,14 @@ module.exports = {
       },
 
       primary: {
-        light: '#5acce6',
-        main: '#0944b3',
-        dark: '#090c29',
-        active: '#348cfd',
+        // light: '#5acce6',
+        light: '#c8c8c8',
+        // main: '#0944b3',
+        main: '#969696',
+        // dark: '#090c29',
+        dark: '#525252',
+        // active: '#348cfd',
+        active: '#c8c8c8',
       },
 
       inputfield: {
@@ -54,10 +58,14 @@ module.exports = {
       },
 
       secondary: {
-        light: '#3a3f99',
-        main: '#2b166b',
-        dark: '#041c4a',
-        active: '#1f1f27',
+        // light: '#3a3f99',
+        light: '#c8c8c8',
+        // main: '#2b166b',
+        main: '#969696',
+        // dark: '#041c4a',
+        dark: '#969696',
+        // active: '#1f1f27',
+        active: '#c8c8c8',
       },
 
       common: {
@@ -65,7 +73,8 @@ module.exports = {
         light: '#a19fad',
         main: '#fff',
         dark: '#726f7e',
-        active: '#2c3074',
+        // active: '#2c3074',
+        active: '#c8c8c8',
       },
 
       customgreen: {
