@@ -1,4 +1,5 @@
 import StudyList from './StudyList';
-import Viewer from './Viewer';
+// import Viewer from './Viewer';
+import Login from './Login';
 
-export { StudyList, Viewer };
+export { StudyList, Login };
