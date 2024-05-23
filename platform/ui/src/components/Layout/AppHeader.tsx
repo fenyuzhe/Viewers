@@ -1,8 +1,8 @@
 import React from 'react';
-import { Layout, Button, theme } from 'antd';
+import { Layout, Button, theme, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
-import { MenuFoldOutlined, PoweroffOutlined, LogoutOutlined } from '@ant-design/icons';
+import { MenuFoldOutlined, PoweroffOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 
@@ -29,23 +29,38 @@ const AppHeader = ({ toggleSidebar, collapsed }) => {
       }}
     >
       <div>
-        <Button
-          type="text"
-          icon={collapsed ? <LogoutOutlined /> : <MenuFoldOutlined />}
-          onClick={() => toggleSidebar(!collapsed)}
-          style={{
-            fontSize: '16px',
-          }}
-        />
+        <Tooltip
+          placement="right"
+          title={collapsed ? '展开' : '折叠'}
+        >
+          <Button
+            type="text"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            onClick={() => toggleSidebar(!collapsed)}
+            style={{
+              fontSize: '16px',
+            }}
+          />
+        </Tooltip>
       </div>
-      <Button
-        type="text"
-        icon={<PoweroffOutlined />}
-        onClick={handleLogout}
-        style={{
-          fontSize: '16px',
-        }}
-      ></Button>
+      <div>
+        {/* <span style={{ marginRight: '10px', fontSize: '20px' }}>
+          您好，<a>游客</a>
+        </span> */}
+        <Tooltip
+          placement="left"
+          title="退出登录"
+        >
+          <Button
+            type="text"
+            icon={<PoweroffOutlined />}
+            onClick={handleLogout}
+            style={{
+              fontSize: '16px',
+            }}
+          ></Button>
+        </Tooltip>
+      </div>
     </Header>
   );
 };

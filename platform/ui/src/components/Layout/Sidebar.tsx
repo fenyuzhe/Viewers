@@ -1,22 +1,22 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import PropTypes from 'prop-types';
-import { HomeOutlined, InfoCircleOutlined, ContactsOutlined } from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { useAppConfig } from '@state';
 
 const { Sider } = Layout;
 
 const Sidebar = ({ collapsed }) => {
+  const [appConfig] = useAppConfig();
   return (
     <Sider
       trigger={null}
       collapsible
       collapsed={collapsed}
     >
-      <div className="h-20 ">
-        <div className="bg-[rgb(51,68,84)] p-3">
-          <h1 className="text-center text-2xl text-white">临床工作站</h1>
-        </div>
+      <div className="flex h-20 items-center justify-center">
+        <h1 className="text-center text-2xl text-white">{appConfig.sidebartext}</h1>
       </div>
       <Menu
         theme="dark"

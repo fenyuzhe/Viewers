@@ -19,7 +19,10 @@ const LayOut = () => {
     <Layout style={{ minHeight: '100vh' }}>
       <Sidebar collapsed={collapsed} />
       <Layout style={{ padding: '0 5px 5px' }}>
-        <AppHeader toggleSidebar={toggleSidebar} />
+        <AppHeader
+          toggleSidebar={toggleSidebar}
+          collapsed={collapsed}
+        />
         <Breadcrumbs />
         <Content
           style={{
