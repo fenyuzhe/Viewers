@@ -37,7 +37,7 @@ const StudyList = () => {
     setLoading(true);
     try {
       const response = await getStudyList(params);
-      const resData = response.data;
+      const resData = response;
       setPagination({
         current: resData.pageNum,
         pageSize: resData.pageSize,
@@ -135,10 +135,7 @@ const StudyList = () => {
           <a
             style={{ color: '#1677ff' }}
             onClick={() => {
-              window.open(
-                `http://localhost:3000/ClinicalWorkList?type=3&queryNo=${record.register_key}`,
-                '_blank'
-              );
+              window.open(`/ClinicalWorkList?type=3&queryNo=${record.register_key}`, '_blank');
             }}
           >
             查看
